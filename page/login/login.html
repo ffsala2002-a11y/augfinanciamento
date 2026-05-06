@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./login.css">
+  <title>AUG — Login</title>
+</head>
+
+<body>
+  
+  <div class="login-box">
+    
+    <div class="box-title">
+      <img class="logo" src="./../../src/img/AUG-removebg-preview.png" alt="Logo">
+      <h1 class="title">AUG Financeira</h1>
+      <p class="sub-title">Acesse sua conta agora!</p>
+    </div>
+    
+    <div class="box-campos">
+      <input type="text" id="nomeUsuario" required>
+      <label class="dg-nome" for="nomeUsuario">Digite seu nome</label>
+      
+      <input type="text" id="siglaLoja" required>
+      <label class="sg-loja" for="siglaLoja">Sigla da loja (ex: AUG)</label>
+      <label class="erro-sigla"></label>
+      
+      <button id="btnEntrar">Entrar</button>
+    </div>
+    
+  </div>
+  
+  <p id="erroLogin" class="erro"></p>
+  
+  <audio class="vozErroCampo" src="../../src/audio/erroCampo.mp3"></audio>
+  <audio class="vozErroSigla" src="../../src/audio/erroSigla.mp3"></audio>
+  <audio class="vozErroLoja" src="../../src/audio/erroLoja.mp3"></audio>
+  
+  <script type="module" src="../../src/js/login.js"></script>
+</body>
+
+</html>
