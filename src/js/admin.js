@@ -50,28 +50,21 @@ window.addEventListener('load', async () => {
 async function carregarLojas() {
   const { data } = await supabase.from('lojas').select('*');
   const select = document.getElementById('selectLoja');
-  const selectApagar = document.getElementById('selectLojaApagar'); // novo
+  const selectApagar = document.getElementById('selectLojaApagar');
+  const selectRemover = document.getElementById('selectLojaRemover');
   const listaEl = document.getElementById('listaLojas');
   
+  // Limpa tudo antes de popular
   select.innerHTML = '';
-  selectApagar.innerHTML = ''; // novo
+  selectApagar.innerHTML = '';
+  selectRemover.innerHTML = '';
   listaEl.innerHTML = '';
   
   data?.forEach(loja => {
     const option = `<option value="${loja.sigla}">${loja.nome} (${loja.sigla})</option>`;
     select.innerHTML += option;
-    selectApagar.innerHTML += option; // novo
-    listaEl.innerHTML += `<div class="loja-item">${loja.nome} — <strong>${loja.sigla}</strong></div>`;
-  });
-  
-  const selectRemover = document.getElementById('selectLojaRemover');
-  selectRemover.innerHTML = '';
-  
-  data?.forEach(loja => {
-    const option = `<option value="${loja.sigla}">${loja.nome} (${loja.sigla})</option>`;
-    select.innerHTML += option;
     selectApagar.innerHTML += option;
-    selectRemover.innerHTML += option; // novo
+    selectRemover.innerHTML += option;
     listaEl.innerHTML += `<div class="loja-item">${loja.nome} — <strong>${loja.sigla}</strong></div>`;
   });
 }
