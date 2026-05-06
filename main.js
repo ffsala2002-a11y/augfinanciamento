@@ -1,4 +1,5 @@
 // ================= IMPORTS =================
+import { supabase } from './src/js/supabase.js';
 import { iniciarBancoImagens, pegarImagens } from './src/js/imagens.js';
 import { carregarBase, limparBase } from './src/js/base.js';
 import { adicionarCarrinho, limparCarrinho, carrinho } from './src/js/carrinho.js';
@@ -45,8 +46,20 @@ function atualizarBotoesModo() {
   btnModoLocal?.classList.toggle('ativo', modo === 'local');
 }
 
-btnModoNuvem?.addEventListener('click', () => { setModo('nuvem'); atualizarBotoesModo(); inicializarProdutos(); mostrarAlerta('☁️ Banco nuvem ativado!', 'sucesso'); nuvemAtivo.currentTime = 0; nuvemAtivo.volume = 0.5; nuvemAtivo.play();});
-btnModoLocal?.addEventListener('click', () => { setModo('local'); atualizarBotoesModo(); inicializarProdutos(); mostrarAlerta('💾 Banco local ativado!', 'info'); localAtivo.currentTime = 0; localAtivo.volume = 0.5; localAtivo.play()});
+btnModoNuvem?.addEventListener('click', () => { setModo('nuvem');
+  atualizarBotoesModo();
+  inicializarProdutos();
+  mostrarAlerta('☁️ Banco nuvem ativado!', 'sucesso');
+  nuvemAtivo.currentTime = 0;
+  nuvemAtivo.volume = 0.5;
+  nuvemAtivo.play(); });
+btnModoLocal?.addEventListener('click', () => { setModo('local');
+  atualizarBotoesModo();
+  inicializarProdutos();
+  mostrarAlerta('💾 Banco local ativado!', 'info');
+  localAtivo.currentTime = 0;
+  localAtivo.volume = 0.5;
+  localAtivo.play() });
 
 atualizarBotoesModo();
 
@@ -61,8 +74,27 @@ let produtosCache = [];
 
 // Atualize a função inicializarProdutos
 async function inicializarProdutos() {
+  // Verifica se a loja do usuário ainda existe no banco
+  const { data, error } = await supabase
+    .from('lojas')
+    .select('sigla')
+    .eq('sigla', usuario.sigla)
+    .single();
+  
+  if (error || !data) {
+    mostrarAlerta('⚠️ Sua loja foi removida. Você será deslogado.', 'erro', 3000);
+    setTimeout(() => {
+      localStorage.removeItem('usuario');
+      localStorage.removeItem('produtos');
+      localStorage.removeItem('garantias');
+      localStorage.removeItem('carrinho');
+      window.location.href = './login.html';
+    }, 3000);
+    return;
+  }
+  
   produtosCache = await getProdutos();
-  await getGarantias(); // puxa e salva no localStorage automaticamente
+  await getGarantias();
   atualizarResumoBase();
 }
 
@@ -71,23 +103,23 @@ inicializarProdutos();
 // ================= ALERTA =================
 function mostrarAlerta(mensagem, tipo = "erro", tempo = 3000) {
   let alerta = document.getElementById("alerta");
-
+  
   if (!alerta) {
     alerta = document.createElement("div");
     alerta.id = "alerta";
     alerta.className = "alerta";
     document.body.appendChild(alerta);
   }
-
+  
   alerta.innerText = mensagem;
-
+  
   if (tipo === "erro") alerta.style.background = "#f44336";
   else if (tipo === "sucesso") alerta.style.background = "#4CAF50";
   else alerta.style.background = "#0068bd";
-
+  
   void alerta.offsetWidth;
   alerta.classList.add("show");
-
+  
   setTimeout(() => alerta.classList.remove("show"), tempo);
 }
 
@@ -97,7 +129,7 @@ document.getElementById('btnSalvar').addEventListener('click', () => {
     mostrarAlerta('Você precisa selecionar os dois arquivos.', 'erro');
     return;
   }
-
+  
   carregarBase(fileProdutos.files[0], fileGarantias.files[0], len => {
     mostrarAlerta(`✔ Base carregada (${len} produtos)`, 'sucesso');
     inicializarProdutos();
@@ -129,9 +161,9 @@ document.getElementById('btnCalcular').addEventListener('click', () => {
     mostrarAlerta('Adicione produtos ao carrinho antes de calcular.', 'erro');
     return;
   }
-
+  
   const r = calcularTotal(entrada.value, parcelas.value, taxa.value, arredondar.checked);
-
+  
   resultado.style.display = 'flex';
   resultado.innerHTML = `
     <p><strong>Total:</strong> <span>${r.total.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></p>
@@ -151,9 +183,9 @@ busca.addEventListener('input', () => {
   const idBusca = ++buscaAtual;
   const q = busca.value.toLowerCase().trim();
   sugestoesBody.innerHTML = '';
-
+  
   if (!q) { sugestoes.style.display = 'none'; return; }
-
+  
   const filtrados = produtosCache
     .filter(p =>
       String(p.nce) === q ||
@@ -161,10 +193,10 @@ busca.addEventListener('input', () => {
       p.descricao.toLowerCase().includes(q)
     )
     .slice(0, 25);
-
+  
   filtrados.forEach(p => {
     if (idBusca !== buscaAtual) return;
-
+    
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><img class="img-sugestao" src="${placeholder}" loading="lazy"></td>
@@ -173,23 +205,24 @@ busca.addEventListener('input', () => {
       <td><span class="preco">${p.preco.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></td>
       <td><span class="saldo">${p.saldo}</span></td>
     `;
-
+    
     pegarImagens(p.nce).then(imgs => {
       if (idBusca !== buscaAtual) return;
       const imgEl = tr.querySelector("img");
-      if (imgEl) { imgEl.src = imgs[0]; imgEl.onerror = () => imgEl.src = placeholder; }
+      if (imgEl) { imgEl.src = imgs[0];
+        imgEl.onerror = () => imgEl.src = placeholder; }
     });
-
+    
     tr.onclick = () => {
       adicionarCarrinho(p);
       busca.value = '';
       sugestoes.style.display = 'none';
       //mostrarAlerta('Produto adicionado ao carrinho.', 'sucesso');
     };
-
+    
     sugestoesBody.appendChild(tr);
   });
-
+  
   sugestoes.style.display = filtrados.length ? 'block' : 'none';
 });
 
@@ -215,7 +248,7 @@ function atualizarResumoBase() {
   document.getElementById("totalProdutos").innerText = produtosCache.length;
   document.getElementById("totalSaldo").innerText =
     produtosCache.reduce((acc, p) => acc + (Number(p.saldo) || 0), 0);
-
+  
   const garantias = JSON.parse(localStorage.getItem("garantias") || "[]");
   document.getElementById("totalGarantias").innerText = garantias.length;
 }
@@ -229,7 +262,7 @@ window.addEventListener('load', () => {
   videoLoad.currentTime = 0;
   videoLoad.muted = true;
   videoLoad.play();
-
+  
   setTimeout(() => {
     fundoSpiner.classList.remove("active");
     videoLoad.pause();
@@ -251,7 +284,8 @@ let contador = 0;
 let ultimoCodigo = null;
 let ultimoTempo = 0;
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
 function beep() {
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
@@ -278,14 +312,14 @@ async function iniciarScanner() {
   contador = 0;
   contadorEl.innerText = "0";
   ultimoProdutoEl.innerHTML = "";
-
+  
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
   } catch (err) {
     mostrarAlerta("Erro ao acessar câmera", "erro");
     return;
   }
-
+  
   const video = document.createElement("video");
   video.srcObject = stream;
   video.setAttribute("playsinline", true);
@@ -293,7 +327,7 @@ async function iniciarScanner() {
   container.innerHTML = "";
   container.appendChild(video);
   await video.play();
-
+  
   if ("BarcodeDetector" in window) {
     detector = new BarcodeDetector({ formats: ["ean_13", "code_128"] });
     rodando = true;
@@ -331,10 +365,10 @@ function processarCodigo(codigo) {
   if (nce === ultimoCodigo && (agora - ultimoTempo) < 2000) return;
   ultimoCodigo = nce;
   ultimoTempo = agora;
-
+  
   // usa o cache em vez do localStorage direto
   const produto = produtosCache.find(p => String(p.nce) === nce);
-
+  
   if (produto) {
     adicionarCarrinho(produto);
     beep();
@@ -352,8 +386,10 @@ function processarCodigo(codigo) {
 
 function pararScanner() {
   rodando = false;
-  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
-  if (typeof Quagga !== "undefined") { try { Quagga.stop(); Quagga.offDetected(); } catch {} }
+  if (stream) { stream.getTracks().forEach(t => t.stop());
+    stream = null; }
+  if (typeof Quagga !== "undefined") { try { Quagga.stop();
+      Quagga.offDetected(); } catch {} }
   container.innerHTML = "";
   overlay.classList.remove("active");
 }
