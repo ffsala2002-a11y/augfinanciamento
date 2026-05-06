@@ -88,7 +88,7 @@ async function inicializarProdutos() {
       localStorage.removeItem('produtos');
       localStorage.removeItem('garantias');
       localStorage.removeItem('carrinho');
-      window.location.href = './login.html';
+      window.location.href = './page/login/login.html';
     }, 3000);
     return;
   }
