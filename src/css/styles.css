@@ -452,7 +452,7 @@ body {
 
 /* Palavra "disponíveis" via CSS */
 .card-loja .box-resumo-base .content-resumo p strong::after {
-  content: "disponíveis";
+  content: "com sucesso";
   display: block;
   color: #9CA3AF;
   font-weight: 400;
