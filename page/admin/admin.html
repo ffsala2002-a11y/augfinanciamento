@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>AUG — Admin</title>
+  <link rel="stylesheet" href="./src/css/admin.css">
+</head>
+
+<body>
+  
+  <div id="telaAdmin" class="admin-box" style="display:none">
+    <h1>🛠️ Painel Administrador</h1>
+    
+    <!-- GERENCIAR LOJAS -->
+    <section>
+      <h2>Lojas cadastradas</h2>
+      <div id="listaLojas"></div>
+      
+      <h3>Criar nova loja</h3>
+      <input type="text" id="nomeLoja" placeholder="Nome da loja">
+      <input type="text" id="siglaLoja" placeholder="Sigla (ex: LJ01)">
+      <button id="btnCriarLoja">Criar Loja</button>
+    </section>
+    
+    <!-- APAGAR BANCO DE DADOS DAS LOJAS--->
+    <section>
+      <h2>Lojas cadastradas</h2>
+      <div id="listaLojas"></div>
+      
+      <h3>Apagar banco de uma loja</h3>
+      <select id="selectLojaApagar"></select>
+      <button id="btnApagarBanco">🗑️ Apagar Banco</button>
+      <p id="statusApagar"></p>
+    </section>
+    
+    <!-- APAGAR LOJAS--->
+    <section>
+      <h2>Apagar Loja</h2>
+      <select id="selectLojaRemover"></select>
+      <button id="btnApagarLoja">🗑️ Apagar Loja</button>
+      <p id="statusApagarLoja"></p>
+    </section>
+    
+    <!-- IMPORTAR BASE -->
+    <section>
+      <h2>Importar base para loja</h2>
+      <select id="selectLoja"></select>
+      
+      <div class="upload-admin">
+        <input type="file" id="fileProd">
+        <label for="fileProd">📄 Produtos (.txt)</label>
+        
+        <input type="file" id="fileGar">
+        <label for="fileGar">🛡️ Garantias (.txt)</label>
+      </div>
+      
+      <button id="btnImportar">⬆️ Importar para Nuvem</button>
+      <p id="statusImport"></p>
+    </section>
+  </div>
+  
+  <!-- LOGIN ADMIN -->
+  <div id="telaLoginAdmin" class="admin-box">
+    <h2>🔐 Acesso Restrito</h2>
+    <input type="email" id="emailAdmin" placeholder="Email do admin">
+    <input type="password" id="senhaAdmin" placeholder="Senha">
+    <button id="btnLoginAdmin">Entrar</button>
+    <p id="erroAdmin" class="erro"></p>
+  </div>
+  
+  <!-- PAINEL ADMIN -->
+  <div id="telaAdmin" class="admin-box" style="display:none">
+    <div class="admin-header">
+      <h1>🛠️ Painel Administrador</h1>
+      <button id="btnLogoutAdmin">🚪 Sair</button>
+    </div>
+    <!-- resto igual -->
+  </div>
+  
+  <script type="module" src="../../src/js/admin.js"></script>
+</body>
+
+</html>
