@@ -3,84 +3,187 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>AUG — Admin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./src/css/admin.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="./admin.css">
   <link rel="icon" href="../../src/img/AUG.png" type="image/png">
+  <title>AUG — Admin</title>
 </head>
 
 <body>
-  
-  <div id="telaAdmin" class="admin-box" style="display:none">
-    <h1>🛠️ Painel Administrador</h1>
-    
-    <!-- GERENCIAR LOJAS -->
-    <section>
-      <h2>Lojas cadastradas</h2>
-      <div id="listaLojas"></div>
-      
-      <h3>Criar nova loja</h3>
-      <input type="text" id="nomeLoja" placeholder="Nome da loja">
-      <input type="text" id="siglaLoja" placeholder="Sigla (ex: LJ01)">
-      <button id="btnCriarLoja">Criar Loja</button>
-    </section>
-    
-    <!-- APAGAR BANCO DE DADOS DAS LOJAS--->
-    <section>
-      <h2>Lojas cadastradas</h2>
-      <div id="listaLojas"></div>
-      
-      <h3>Apagar banco de uma loja</h3>
-      <select id="selectLojaApagar"></select>
-      <button id="btnApagarBanco">🗑️ Apagar Banco</button>
-      <p id="statusApagar"></p>
-    </section>
-    
-    <!-- APAGAR LOJAS--->
-    <section>
-      <h2>Apagar Loja</h2>
-      <select id="selectLojaRemover"></select>
-      <button id="btnApagarLoja">🗑️ Apagar Loja</button>
-      <p id="statusApagarLoja"></p>
-    </section>
-    
-    <!-- IMPORTAR BASE -->
-    <section>
-      <h2>Importar base para loja</h2>
-      <select id="selectLoja"></select>
-      
-      <div class="upload-admin">
-        <input type="file" id="fileProd">
-        <label for="fileProd">📄 Produtos (.txt)</label>
-        
-        <input type="file" id="fileGar">
-        <label for="fileGar">🛡️ Garantias (.txt)</label>
-      </div>
-      
-      <button id="btnImportar">⬆️ Importar para Nuvem</button>
-      <p id="statusImport"></p>
-    </section>
-  </div>
-  
-  <!-- LOGIN ADMIN -->
-  <div id="telaLoginAdmin" class="admin-box">
-    <h2>🔐 Acesso Restrito</h2>
-    <input type="email" id="emailAdmin" placeholder="Email do admin">
-    <input type="password" id="senhaAdmin" placeholder="Senha">
+
+  <!-- ===================== LOGIN ===================== -->
+  <div id="telaLoginAdmin">
+    <div class="login-logo">AUG</div>
+    <div class="login-sub">Acesso Restrito</div>
+    <input type="email" id="emailAdmin" placeholder="Email do administrador" autocomplete="email">
+    <input type="password" id="senhaAdmin" placeholder="Senha" autocomplete="current-password">
     <button id="btnLoginAdmin">Entrar</button>
     <p id="erroAdmin" class="erro"></p>
   </div>
-  
-  <!-- PAINEL ADMIN -->
-  <div id="telaAdmin" class="admin-box" style="display:none">
-    <div class="admin-header">
-      <h1>🛠️ Painel Administrador</h1>
+
+  <!-- ===================== PAINEL ===================== -->
+  <div id="telaAdmin" style="display:none">
+
+    <!-- TOPO -->
+    <div class="admin-topo">
+      <div>
+        <div class="admin-topo-brand">AUG</div>
+        <span class="admin-topo-sub">Administrador</span>
+      </div>
       <button id="btnLogoutAdmin">🚪 Sair</button>
     </div>
-    <!-- resto igual -->
-  </div>
-  
-  <script type="module" src="../../src/js/admin.js"></script>
-</body>
 
+    <!-- CONTEÚDO -->
+    <div class="main-content">
+
+      <!-- HOME -->
+      <div id="painel-home" class="painel active">
+        <div class="page-header">
+          <h1>Painel Admin</h1>
+          <p>Gerencie lojas e bases de dados</p>
+        </div>
+        <div id="listaLojas" class="lojas-grid"></div>
+      </div>
+
+      <!-- CRIAR LOJA -->
+      <div id="painel-criarLoja" class="painel">
+        <div class="page-header">
+          <h1>Criar Loja</h1>
+          <p>Cadastre uma nova loja no sistema</p>
+        </div>
+        <div class="painel-card">
+          <h3>Dados da loja</h3>
+          <div class="field-group">
+            <input type="text" id="nomeLoja" placeholder="Nome da loja">
+            <input type="text" id="siglaLoja" placeholder="Sigla (ex: LJ01)">
+            <button class="btn btn-gold" id="btnCriarLoja">✅ Criar Loja</button>
+            <p id="statusCriarLoja" class="status-msg"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMPORTAR BASE -->
+      <div id="painel-importar" class="painel">
+        <div class="page-header">
+          <h1>Importar Base</h1>
+          <p>Envie produtos e garantias para a nuvem</p>
+        </div>
+        <div class="painel-card">
+          <h3>Selecionar loja</h3>
+          <div class="field-group">
+            <select id="selectLoja"></select>
+          </div>
+        </div>
+        <div class="painel-card">
+          <h3>Arquivos</h3>
+          <div class="upload-area">
+            <div class="upload-item" id="uploadProd">
+              <input type="file" id="fileProd">
+              <label for="fileProd">
+                <span class="upload-icon">📄</span>
+                Produtos (.txt)
+              </label>
+            </div>
+            <div class="upload-item" id="uploadGar">
+              <input type="file" id="fileGar">
+              <label for="fileGar">
+                <span class="upload-icon">🛡️</span>
+                Garantias (.txt)
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-gold" id="btnImportar">⬆️ Importar para Nuvem</button>
+          <p id="statusImport" class="status-msg"></p>
+        </div>
+      </div>
+
+      <!-- APAGAR BANCO -->
+      <div id="painel-apagarBanco" class="painel">
+        <div class="page-header">
+          <h1>Apagar Banco</h1>
+          <p>Remove produtos e garantias de uma loja</p>
+        </div>
+        <div class="painel-card">
+          <h3>Selecionar loja</h3>
+          <div class="field-group">
+            <select id="selectLojaApagar"></select>
+            <button class="btn btn-danger" id="btnApagarBanco">🗑️ Apagar Banco</button>
+            <p id="statusApagar" class="status-msg"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- APAGAR LOJA -->
+      <div id="painel-apagarLoja" class="painel">
+        <div class="page-header">
+          <h1>Apagar Loja</h1>
+          <p>Remove a loja e todos os seus dados</p>
+        </div>
+        <div class="painel-card">
+          <h3>Selecionar loja</h3>
+          <div class="field-group">
+            <select id="selectLojaRemover"></select>
+            <button class="btn btn-danger" id="btnApagarLoja">❌ Apagar Loja</button>
+            <p id="statusApagarLoja" class="status-msg"></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+      <button class="bar-btn active" onclick="mostrarPainel('home', this)">
+        <span class="bar-icon">🏠</span>
+        <span class="bar-label">Início</span>
+      </button>
+      <button class="bar-btn" onclick="mostrarPainel('criarLoja', this)">
+        <span class="bar-icon">➕</span>
+        <span class="bar-label">Criar</span>
+      </button>
+      <button class="bar-btn" onclick="mostrarPainel('importar', this)">
+        <span class="bar-icon">⬆️</span>
+        <span class="bar-label">Importar</span>
+      </button>
+      <button class="bar-btn" onclick="mostrarPainel('apagarBanco', this)">
+        <span class="bar-icon">🗑️</span>
+        <span class="bar-label">Banco</span>
+      </button>
+      <button class="bar-btn" onclick="mostrarPainel('apagarLoja', this)">
+        <span class="bar-icon">❌</span>
+        <span class="bar-label">Loja</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script type="module" src="../../src/js/admin.js"></script>
+
+  <script>
+    function mostrarPainel(id, el) {
+      document.querySelectorAll('.painel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.bar-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('painel-' + id).classList.add('active');
+      el.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Feedback visual nos uploads
+    document.addEventListener('change', e => {
+      if (e.target.type === 'file') {
+        const wrap = e.target.closest('.upload-item');
+        if (wrap) {
+          const temArquivo = e.target.files.length > 0;
+          wrap.classList.toggle('has-file', temArquivo);
+          if (temArquivo) {
+            const label = wrap.querySelector('label');
+            const icon = label.querySelector('.upload-icon').outerHTML;
+            label.innerHTML = icon + e.target.files[0].name;
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
 </html>
