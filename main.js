@@ -46,20 +46,24 @@ function atualizarBotoesModo() {
   btnModoLocal?.classList.toggle('ativo', modo === 'local');
 }
 
-btnModoNuvem?.addEventListener('click', () => { setModo('nuvem');
+btnModoNuvem?.addEventListener('click', () => {
+  setModo('nuvem');
   atualizarBotoesModo();
   inicializarProdutos();
   mostrarAlerta('☁️ Banco nuvem ativado!', 'sucesso');
   nuvemAtivo.currentTime = 0;
   nuvemAtivo.volume = 0.5;
-  nuvemAtivo.play(); });
-btnModoLocal?.addEventListener('click', () => { setModo('local');
+  nuvemAtivo.play();
+});
+btnModoLocal?.addEventListener('click', () => {
+  setModo('local');
   atualizarBotoesModo();
   inicializarProdutos();
   mostrarAlerta('💾 Banco local ativado!', 'info');
   localAtivo.currentTime = 0;
   localAtivo.volume = 0.5;
-  localAtivo.play() });
+  localAtivo.play()
+});
 
 atualizarBotoesModo();
 
@@ -83,6 +87,8 @@ async function inicializarProdutos() {
   
   if (error || !data) {
     mostrarAlerta('⚠️ Sua loja foi removida. Você será deslogado.', 'erro', 3000);
+    
+    
     setTimeout(() => {
       localStorage.removeItem('usuario');
       localStorage.removeItem('produtos');
@@ -96,9 +102,40 @@ async function inicializarProdutos() {
   produtosCache = await getProdutos();
   await getGarantias();
   atualizarResumoBase();
+  exibirUltimaImportacao();
 }
 
 inicializarProdutos();
+
+//================= Ixibir Última importação ======================
+async function exibirUltimaImportacao() {
+  if (!usuario?.sigla) return;
+  
+  const { data, error } = await supabase
+    .from('lojas')
+    .select('ultima_importacao')
+    .eq('sigla', usuario.sigla)
+    .single();
+  
+  //console.log('ultima_importacao:', data, error);
+  
+  const el = document.getElementById('dataImportacao');
+  if (!el) { console.warn('Elemento dataImportacao não encontrado'); return; }
+  
+  if (error || !data?.ultima_importacao) {
+    el.innerText = 'Nunca importado';
+    return;
+  }
+  
+  const dataHora = new Date(data.ultima_importacao);
+  el.innerText = dataHora.toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
 
 // ================= ALERTA =================
 function mostrarAlerta(mensagem, tipo = "erro", tempo = 3000) {
@@ -209,8 +246,10 @@ busca.addEventListener('input', () => {
     pegarImagens(p.nce).then(imgs => {
       if (idBusca !== buscaAtual) return;
       const imgEl = tr.querySelector("img");
-      if (imgEl) { imgEl.src = imgs[0];
-        imgEl.onerror = () => imgEl.src = placeholder; }
+      if (imgEl) {
+        imgEl.src = imgs[0];
+        imgEl.onerror = () => imgEl.src = placeholder;
+      }
     });
     
     tr.onclick = () => {
@@ -386,10 +425,16 @@ function processarCodigo(codigo) {
 
 function pararScanner() {
   rodando = false;
-  if (stream) { stream.getTracks().forEach(t => t.stop());
-    stream = null; }
-  if (typeof Quagga !== "undefined") { try { Quagga.stop();
-      Quagga.offDetected(); } catch {} }
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+  }
+  if (typeof Quagga !== "undefined") {
+    try {
+      Quagga.stop();
+      Quagga.offDetected();
+    } catch {}
+  }
   container.innerHTML = "";
   overlay.classList.remove("active");
 }
