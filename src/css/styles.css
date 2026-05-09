@@ -486,6 +486,22 @@ body {
   display: none;
 }
 
+.box-importacao {
+  position: absolute;
+  top: 12rem;
+  left: 4rem;
+  /*border: solid 1px;*/
+  padding: 0rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 10px;
+}
+
+.box-importacao .box-title .title {
+  font-size: 11px;
+}
+
 /* ══════════════════════════════════════════════════════
    3. SEÇÃO IMPORTAÇÃO LOCAL
    ══════════════════════════════════════════════════════ */
