@@ -191,7 +191,6 @@ document.getElementById('btnImportar').addEventListener('click', async () => {
   }
   
   // Registrar última importação das tabela.
-  // Registrar última importação das tabela.
   const agora = new Date().toISOString();
   
   const { error: errUpdate } = await supabase
