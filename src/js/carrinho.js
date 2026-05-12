@@ -1,5 +1,9 @@
 import { fmt } from './util.js';
 import { pegarImagens } from './imagens.js';
+import { iniciarFichaTecnica } from './fichaTecnica.js';
+
+
+iniciarFichaTecnica(pegarImagens);
 
 export let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
@@ -78,7 +82,7 @@ export function render() {
     div.innerHTML = `
       <div>
 
-        <div class="box-img">
+        <div class="box-img-card">
           <img 
             class="img-produto" 
             src="${placeholder}" 
@@ -92,10 +96,10 @@ export function render() {
         </div>
 
         <div class="info-produto">
-          <small style="color:#000;font-weight:bold;">🔢: ${p.nce}</small> |
-          <small style="color:#000;font-weight:bold;">🗄️: G${p.grupo || "-"}</small> |
-          <small style="color:#F16800;font-weight:bold;">📦: ${p.saldo ?? "-"}</small> |
-          <small style="color:#000;font-weight:bold;font-size:10px;">🎨: ${p.cor || "-"}</small>
+          <small class="NCE">NCE: ${p.nce}</small>
+          <small class="grupo">Grupo: <strong>${p.grupo || "-"}</strong></small>
+          <small class="saldo">Saldo: <strong>${p.saldo ?? "-"}</strong></small>
+          <small class="cor">🎨: ${p.cor || "-"}</small>
         </div>
 
         <div class="box-quantidade">
@@ -105,23 +109,29 @@ export function render() {
             <button class="btn-plus">+</button>
           </div>
         </div>
-
+        
         <div class="garantia-item">
-          <label>Garantia:</label>
-          <select class="select-garantia">
-            <option value="0">Sem garantia</option>
-            <option value="1">GE 1 (${fmt(valorG1)})</option>
-            <option value="2">GE 2 (${fmt(valorG2)})</option>
-          </select>
+          <button class="btn-garantia ${p.garantia === 1 ? 'ativo' : ''}" data-valor="1">
+            <span class="description">🛡️ GE 1</span> <span>${fmt(valorG1)}</span>
+          </button>
+          <button class="btn-garantia ${p.garantia === 2 ? 'ativo' : ''}" data-valor="2">
+            <span class="description">🛡️ GE 2</span> <span>${fmt(valorG2)}</span>
+          </button>
         </div>
-      </div>
+      
+      <button class="btn-ficha" data-index="${index}">✦ Ficha Técnica</button>
 
       <div>
         <strong class="valor-total">
+           <span>Preço</span>
           ${(Number(p.preco) * Number(p.quantidade)).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
         </strong>
       </div>
     `;
+    
+    div.querySelector('.btn-ficha').onclick = () => {
+      abrirFicha(p);
+    };
     
     //  carrega imagem depois (sem travar)
     setTimeout(async () => {
@@ -151,15 +161,16 @@ export function render() {
       renderSafe();
     };
     
-    // garantia
-    const select = div.querySelector('.select-garantia');
-    select.value = p.garantia;
-    
-    select.onchange = e => {
-      p.garantia = Number(e.target.value);
-      salvarCarrinho();
-      renderSafe();
-    };
+    // ===== GARANTIA — TOGGLE =====
+    div.querySelectorAll('.btn-garantia').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = Number(btn.dataset.valor);
+        // Se já está ativo, desativa. Senão ativa
+        p.garantia = p.garantia === val ? 0 : val;
+        salvarCarrinho();
+        renderSafe();
+      });
+    });
     
     // apagar
     const btnApagar = document.createElement('button');
