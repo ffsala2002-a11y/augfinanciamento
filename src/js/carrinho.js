@@ -1,15 +1,11 @@
 import { fmt } from './util.js';
 import { pegarImagens } from './imagens.js';
-//import { iniciarFichaTecnica } from './fichaTecnica.js';
-
-
-iniciarFichaTecnica(pegarImagens);
 
 export let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
 const placeholder = "https://raw.githubusercontent.com/ffsala2002-a11y/produtos-imagens/main/img-produtos/sem_img.png";
 
-//  cache de imagens (evita requisições repetidas)
+// cache de imagens (evita requisições repetidas)
 const cacheImagens = {};
 
 async function getImagem(nce) {
@@ -53,7 +49,7 @@ export function limparCarrinho() {
   renderSafe();
 }
 
-//  debounce de render (evita travar UI)
+// debounce de render (evita travar UI)
 let renderTimeout;
 
 function renderSafe() {
@@ -61,7 +57,7 @@ function renderSafe() {
   renderTimeout = setTimeout(render, 50);
 }
 
-//  Render principal (SEM BLOQUEIO)
+// Render principal (SEM BLOQUEIO)
 export function render() {
   const lista = document.getElementById('lista');
   const resultado = document.getElementById('resultado');
@@ -78,7 +74,7 @@ export function render() {
     const valorG1 = g ? (g.g1 || 0) * p.quantidade : 0;
     const valorG2 = g ? (g.g2 || 0) * p.quantidade : 0;
     
-    //  render imediato com placeholder
+    // render imediato com placeholder
     div.innerHTML = `
       <div>
 
@@ -118,8 +114,6 @@ export function render() {
             <span class="description">🛡️ GE 2</span> <span>${fmt(valorG2)}</span>
           </button>
         </div>
-      
-      <button class="btn-ficha" data-index="${index}">✦ Ficha Técnica</button>
 
       <div>
         <strong class="valor-total">
@@ -129,11 +123,7 @@ export function render() {
       </div>
     `;
     
-    div.querySelector('.btn-ficha').onclick = () => {
-      abrirFicha(p);
-    };
-    
-    //  carrega imagem depois (sem travar)
+    // carrega imagem depois (sem travar)
     setTimeout(async () => {
       const imgEl = div.querySelector(".img-produto");
       if (!imgEl) return;
@@ -146,7 +136,7 @@ export function render() {
       }
     }, 0);
     
-    // 🔹 botões
+    // botões
     div.querySelector('.btn-plus').onclick = () => {
       p.quantidade++;
       salvarCarrinho();
@@ -165,8 +155,10 @@ export function render() {
     div.querySelectorAll('.btn-garantia').forEach(btn => {
       btn.addEventListener('click', () => {
         const val = Number(btn.dataset.valor);
+        
         // Se já está ativo, desativa. Senão ativa
         p.garantia = p.garantia === val ? 0 : val;
+        
         salvarCarrinho();
         renderSafe();
       });
@@ -189,7 +181,7 @@ export function render() {
   });
 }
 
-// 🔹 modal (mantido igual)
+// modal
 document.addEventListener("click", async e => {
   if (!e.target.classList.contains("img-produto")) return;
   
@@ -226,7 +218,9 @@ document.addEventListener("click", async e => {
   imagensOriginais.forEach((_, i) => {
     const dot = document.createElement("div");
     dot.classList.add("indicador");
+    
     if (i === 0) dot.classList.add("ativo");
+    
     indicadoresBox.appendChild(dot);
   });
   
@@ -252,14 +246,19 @@ document.addEventListener("click", async e => {
   }
   
   modal.style.display = "flex";
+  
   track.style.transition = "none";
   track.style.transform = `translateX(-${index * 100}%)`;
   
-  setTimeout(() => { track.style.transition = "transform 0.3s ease" }, 50);
+  setTimeout(() => {
+    track.style.transition = "transform 0.3s ease";
+  }, 50);
   
   atualizarIndicador();
   
-  track.ontouchstart = ev => { startX = ev.touches[0].clientX; };
+  track.ontouchstart = ev => {
+    startX = ev.touches[0].clientX;
+  };
   
   track.ontouchend = ev => {
     const endX = ev.changedTouches[0].clientX;
@@ -269,6 +268,7 @@ document.addEventListener("click", async e => {
     if (diff < -50) index--;
     
     track.style.transform = `translateX(-${index * 100}%)`;
+    
     atualizarIndicador();
     
     if (imagensOriginais.length > 1) {
@@ -281,7 +281,9 @@ document.addEventListener("click", async e => {
         
         atualizarIndicador();
         
-        setTimeout(() => { track.style.transition = "transform 0.3s ease" }, 50);
+        setTimeout(() => {
+          track.style.transition = "transform 0.3s ease";
+        }, 50);
       }, 300);
     }
   };
