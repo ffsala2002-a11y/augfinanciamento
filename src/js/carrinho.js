@@ -1,6 +1,6 @@
 import { fmt } from './util.js';
 import { pegarImagens } from './imagens.js';
-import { iniciarFichaTecnica } from './fichaTecnica.js';
+//import { iniciarFichaTecnica } from './fichaTecnica.js';
 
 
 iniciarFichaTecnica(pegarImagens);
