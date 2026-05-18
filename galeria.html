@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>AUG Financeira — Galeria</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d0d;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* TOPO */
+    .topo {
+      background: #DD0000;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .topo-brand {
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #FFCD03, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .topo-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 60%;
+    }
+
+    /* CARROSSEL */
+    .carrossel-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carrossel-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+
+    .carrossel-slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .carrossel-slide img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    /* INDICADORES */
+    .indicadores {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 14px;
+      flex-shrink: 0;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: all 0.2s;
+    }
+
+    .dot.ativo {
+      background: #DD0000;
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* CONTADOR */
+    .contador {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* SETAS */
+    .seta {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+      z-index: 5;
+    }
+
+    .seta:active { background: rgba(255,255,255,0.25); }
+    .seta-esq { left: 10px; }
+    .seta-dir { right: 10px; }
+
+    /* LOADING */
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: #0d0d0d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 100;
+    }
+
+    .loading-logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #FFCD03, #fff, #DD0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      background: #DD0000;
+      border-radius: 50%;
+      animation: bounce 0.8s infinite;
+    }
+
+    .loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+    /* ERRO */
+    .erro {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      display: none;
+    }
+
+    .erro-icon { font-size: 48px; }
+    .erro p { font-size: 14px; color: #9CA3AF; text-align: center; padding: 0 32px; }
+
+    /* RODAPÉ */
+    .rodape {
+      padding: 10px 16px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="loading-logo">AUG</div>
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <p style="font-size:13px;color:#9CA3AF">Carregando imagens...</p>
+  </div>
+
+  <!-- ERRO -->
+  <div class="erro" id="erro">
+    <div class="erro-icon">📷</div>
+    <p>Nenhuma imagem encontrada para este produto.</p>
+  </div>
+
+  <!-- TOPO -->
+  <div class="topo" id="topo" style="display:none">
+    <div>
+      <div class="topo-brand">AUG FINANCEIRA</div>
+      <div class="topo-desc" id="topoDesc">Galeria do produto</div>
+    </div>
+  </div>
+
+  <!-- CARROSSEL -->
+  <div class="carrossel-wrap" id="carrosselWrap" style="display:none">
+    <div class="carrossel-track" id="track"></div>
+    <div class="contador" id="contador">1 / 1</div>
+    <button class="seta seta-esq" id="setaEsq">‹</button>
+    <button class="seta seta-dir" id="setaDir">›</button>
+  </div>
+
+  <!-- INDICADORES -->
+  <div class="indicadores" id="indicadores" style="display:none"></div>
+
+  <!-- RODAPÉ -->
+  <div class="rodape" id="rodape" style="display:none">AUG Financeira ✨</div>
+
+  <script type="module">
+    import { pegarImagens } from './src/js/imagens.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const nce = params.get('nce');
+    const desc = params.get('desc') || 'Produto';
+
+    const loading = document.getElementById('loading');
+    const erroEl = document.getElementById('erro');
+    const topo = document.getElementById('topo');
+    const topoDesc = document.getElementById('topoDesc');
+    const wrap = document.getElementById('carrosselWrap');
+    const track = document.getElementById('track');
+    const indicadores = document.getElementById('indicadores');
+    const rodape = document.getElementById('rodape');
+    const contador = document.getElementById('contador');
+    const setaEsq = document.getElementById('setaEsq');
+    const setaDir = document.getElementById('setaDir');
+
+    const placeholder = "https://raw.githubusercontent.com/ffsala2002-a11y/produtos-imagens/main/img-produtos/sem_img.png";
+
+    let index = 0;
+    let imgs = [];
+
+    async function init() {
+      if (!nce) { mostrarErro(); return; }
+
+      topoDesc.textContent = decodeURIComponent(desc);
+
+      try {
+        imgs = await pegarImagens(nce);
+        imgs = imgs.filter(u => u && u !== placeholder);
+      } catch {
+        imgs = [];
+      }
+
+      if (!imgs.length) { mostrarErro(); return; }
+
+      // Monta slides
+      imgs.forEach(src => {
+        const slide = document.createElement('div');
+        slide.className = 'carrossel-slide';
+        const img = document.createElement('img');
+        img.src = src;
+        img.onerror = () => img.src = placeholder;
+        slide.appendChild(img);
+        track.appendChild(slide);
+      });
+
+      // Monta dots
+      imgs.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' ativo' : '');
+        indicadores.appendChild(dot);
+      });
+
+      atualizarUI();
+
+      // Esconde loading, mostra tudo
+      loading.style.display = 'none';
+      topo.style.display = 'flex';
+      wrap.style.display = 'block';
+      indicadores.style.display = imgs.length > 1 ? 'flex' : 'none';
+      rodape.style.display = 'block';
+
+      // Setas só se tiver mais de 1
+      setaEsq.style.display = imgs.length > 1 ? 'flex' : 'none';
+      setaDir.style.display = imgs.length > 1 ? 'flex' : 'none';
+    }
+
+    function atualizarUI() {
+      track.style.transition = 'transform 0.3s ease';
+      track.style.transform = `translateX(-${index * 100}%)`;
+      contador.textContent = `${index + 1} / ${imgs.length}`;
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('ativo', i === index);
+      });
+    }
+
+    function mostrarErro() {
+      loading.style.display = 'none';
+      erroEl.style.display = 'flex';
+    }
+
+    // Navegação por setas
+    setaEsq.onclick = () => { index = (index - 1 + imgs.length) % imgs.length; atualizarUI(); };
+    setaDir.onclick = () => { index = (index + 1) % imgs.length; atualizarUI(); };
+
+    // Swipe touch
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+
+    wrap.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      dragging = true;
+    }, { passive: true });
+
+    wrap.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
+      // Se movimento horizontal predomina, arrastar slide
+      if (Math.abs(dx) > Math.abs(dy)) {
+        const offset = index * 100 - (dx / wrap.offsetWidth) * 100;
+        track.style.transition = 'none';
+        track.style.transform = `translateX(-${offset}%)`;
+      }
+    }, { passive: true });
+
+    wrap.addEventListener('touchend', e => {
+      if (!dragging) return;
+      dragging = false;
+      const diff = startX - e.changedTouches[0].clientX;
+      if (diff > 50 && index < imgs.length - 1) index++;
+      else if (diff < -50 && index > 0) index--;
+      atualizarUI();
+    });
+
+    init();
+  </script>
+
+</body>
+</html>
