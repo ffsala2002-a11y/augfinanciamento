@@ -1,48 +1,104 @@
-import { parseProdutos, parseGarantias } from './parser.js';
+// importar parsers
+import {
+  parseProdutos,
+  parseGarantias
+} from './parser.js';
 
 
-
-export function carregarBase(fileProdutos, fileGarantias, callback){
-
-  if(!fileProdutos || !fileGarantias) return alert("Envie os dois arquivos");
-
+// carregar base
+export function carregarBase(
+  fileProdutos,
+  fileGarantias,
+  callback
+) {
   
-
-  const r1 = new FileReader();
-
+  // validar arquivos
+  if (
+    !fileProdutos ||
+    !fileGarantias
+  ) {
+    
+    return alert(
+      "Envie os dois arquivos"
+    );
+  }
+  
+  
+  // leitor produtos
+  const r1 =
+    new FileReader();
+  
+  
+  // quando carregar produtos
   r1.onload = e => {
-
-    const prod = parseProdutos(e.target.result);
-
-    localStorage.setItem("produtos", JSON.stringify(prod));
-
-
-
-    const r2 = new FileReader();
-
+    
+    // converter produtos
+    const prod =
+      parseProdutos(
+        e.target.result
+      );
+    
+    
+    // salvar produtos
+    localStorage.setItem(
+      "produtos",
+      JSON.stringify(prod)
+    );
+    
+    
+    // leitor garantias
+    const r2 =
+      new FileReader();
+    
+    
+    // quando carregar garantias
     r2.onload = ev => {
-
-      localStorage.setItem("garantias", JSON.stringify(parseGarantias(ev.target.result)));
-
-      if(callback) callback(prod.length);
-
+      
+      // salvar garantias
+      localStorage.setItem(
+        "garantias",
+        
+        JSON.stringify(
+          parseGarantias(
+            ev.target.result
+          )
+        )
+      );
+      
+      
+      // callback
+      if (callback) {
+        
+        callback(prod.length);
+      }
     };
-
-    r2.readAsText(fileGarantias);
-
+    
+    
+    // ler arquivo garantias
+    r2.readAsText(
+      fileGarantias
+    );
   };
-
-  r1.readAsText(fileProdutos);
-
+  
+  
+  // ler arquivo produtos
+  r1.readAsText(
+    fileProdutos
+  );
 }
 
 
-
-export function limparBase(){
-  localStorage.removeItem("produtos");
-  localStorage.removeItem("garantias");
+// limpar base
+export function limparBase() {
+  
+  // remove produtos
+  localStorage.removeItem(
+    "produtos"
+  );
+  
+  
+  // remove garantias
+  localStorage.removeItem(
+    "garantias"
+  );
 }
-
-
-
-

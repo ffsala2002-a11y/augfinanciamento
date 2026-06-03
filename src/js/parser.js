@@ -1,45 +1,66 @@
 import { parsePrecoSeguro } from './util.js';
 
+// Faz parse da base de produtos
 export function parseProdutos(txt) {
   
+  // Divide arquivo por linhas
   const linhas = txt.split("\n");
   
   const produtos = [];
   
+  // Guarda último grupo encontrado
   let grupoAtual = "";
   
+  // Percorre linhas
   for (let linha of linhas) {
     
-    if (!linha.trim().startsWith("*")) continue;
-    
-    
+    // Ignora linhas inválidas
+    if (!linha.trim().startsWith("*")) {
+      continue;
+    }
     
     try {
       
-      // colunas por posição fixa
+      // Extrai grupo
+      const grupo =
+        linha.substring(3, 5).trim() ||
+        grupoAtual;
       
-      const grupo = linha.substring(3, 5).trim() || grupoAtual;
+      // Extrai NCE
+      const nce =
+        linha.substring(6, 12).trim();
       
-      const nce = linha.substring(6, 12).trim();
+      // Extrai cor
+      const cor =
+        linha.substring(18, 38).trim();
       
-      const cor = linha.substring(18, 38).trim();
+      // Extrai descrição
+      const descricaoBruta =
+        linha.substring(39, 90).trim();
       
-      const descricaoBruta = linha.substring(39, 90).trim();
+      // Extrai saldo e preço
+      const valores =
+        extrairValoresFinais(linha);
       
-      const valores = extrairValoresFinais(linha);
+      console.log(
+        "SALDO:",
+        valores.saldo,
+        "PRECO:",
+        valores.preco
+      );
       
-      console.log("SALDO:", valores.saldo, "PRECO:", valores.preco);
+      const saldo =
+        valores.saldo;
       
-      const saldo = valores.saldo;
+      const preco =
+        valores.preco;
       
-      const preco = valores.preco;
+      // Atualiza grupo atual
+      if (grupo) {
+        grupoAtual = grupo;
+      }
       
-      
-      
-      if (grupo) grupoAtual = grupo;
-      
-      
-      
+      // Adiciona produto
       produtos.push({
         
         descricao: limparDescricao(descricaoBruta),
@@ -53,88 +74,119 @@ export function parseProdutos(txt) {
         saldo: Number(saldo) || 0,
         
         preco: Number(preco) || 0
-        
       });
-      
-      
       
     } catch (err) {
       
-      console.log("Erro parse linha:", linha);
-      
+      console.log(
+        "Erro parse linha:",
+        linha
+      );
     }
-    
   }
   
   return produtos;
-  
 }
 
+// Extrai saldo e preço da linha
 function extrairValoresFinais(linha) {
-  if (!linha) return { saldo: 0, preco: 0 };
-
-  // aceita milhar com ponto OU vírgula, mas exige 2 casas decimais no final
-  const matches = linha.match(/\d+(?:[.,]\d{3})*\.\d{2}\b/g);
-
-  if (!matches || matches.length < 2) {
-    return { saldo: 0, preco: 0 };
+  
+  if (!linha) {
+    
+    return {
+      saldo: 0,
+      preco: 0
+    };
   }
-
-  // 🔹 saldo = primeiro valor monetário (2 casas)
-  const saldo = parseFloat(matches[0]) || 0;
-
-  // 🔹 preço = último valor monetário
-  const precoBruto = matches[matches.length - 1];
-
-  // remove vírgula ou ponto de milhar
-  const precoLimpo = precoBruto.replace(/[.,](?=\d{3}\.)/g, "");
-
-  const preco = Number(precoLimpo) || 0;
-
-  return { saldo, preco };
+  
+  // Busca valores monetários
+  const matches =
+    linha.match(
+      /\d+(?:[.,]\d{3})*\.\d{2}\b/g
+    );
+  
+  // Se não encontrar valores
+  if (!matches || matches.length < 2) {
+    
+    return {
+      saldo: 0,
+      preco: 0
+    };
+  }
+  
+  // Primeiro valor = saldo
+  const saldo =
+    parseFloat(matches[0]) || 0;
+  
+  // Último valor = preço
+  const precoBruto =
+    matches[matches.length - 1];
+  
+  // Remove separador de milhar
+  const precoLimpo =
+    precoBruto.replace(
+      /[.,](?=\d{3}\.)/g,
+      ""
+    );
+  
+  const preco =
+    Number(precoLimpo) || 0;
+  
+  return {
+    saldo,
+    preco
+  };
 }
 
+// Limpa descrição
 function limparDescricao(desc) {
   
   if (!desc) return "";
   
   return desc
     
-    // remove cubagem/medidas
+    // Remove medidas
+    .replace(
+      /\d+(\,\d+)?\s?(L|ML|KG|GR|W|V)/gi,
+      ""
+    )
     
-    .replace(/\d+(\,\d+)?\s?(L|ML|KG|GR|W|V)/gi, "")
-    
+    // Remove espaços extras
     .replace(/\s{2,}/g, " ")
     
     .trim();
-  
 }
 
+// Faz parse da base de garantias
 export function parseGarantias(txt) {
   
   return txt
     
+    // Divide linhas
     .split(/\r?\n/)
     
+    // Converte cada linha
     .map(l => {
       
+      // Busca NCE
+      const nceMatch =
+        l.match(/\b(\d{4,})\b/);
       
+      if (!nceMatch) {
+        return null;
+      }
       
-      const nceMatch = l.match(/\b(\d{4,})\b/);
-      
-      if (!nceMatch) return null;
-      
-      
-      
+      // Busca valores monetários
       const valores = [...l.matchAll(/(\d+[.,]\d{2})/g)]
         
-        .map(v => parsePrecoSeguro(v[1]));
+        .map(v =>
+          parsePrecoSeguro(v[1])
+        );
       
-      
-      
-      if (valores.length === 0) return null;
-      
-      
+      // Se não tiver valores
+      if (valores.length === 0) {
+        return null;
+      }
       
       return {
         
@@ -143,13 +195,10 @@ export function parseGarantias(txt) {
         g1: valores[0] || 0,
         
         g2: valores[1] || 0
-        
       };
-      
-      
       
     })
     
+    // Remove valores nulos
     .filter(Boolean);
-  
 }

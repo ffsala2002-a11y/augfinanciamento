@@ -1,34 +1,78 @@
+// Inicializa banco de imagens
 export async function iniciarBancoImagens() {
+  
   try {
-    const res = await fetch("https://raw.githubusercontent.com/ffsala2002-a11y/produtos-imagens/refs/heads/main/data/imagens.json");
-    if (!res.ok) throw new Error("Erro ao carregar JSON de imagens do GitHub");
     
-    const imagensPadrao = await res.json();
-    localStorage.setItem("imagens", JSON.stringify(imagensPadrao));
+    // Busca JSON de imagens no GitHub
+    const res = await fetch(
+      "https://raw.githubusercontent.com/ffsala2002-a11y/produtos-imagens/refs/heads/main/data/imagens.json"
+    );
+    
+    // Verifica erro na resposta
+    if (!res.ok) {
+      
+      throw new Error(
+        "Erro ao carregar JSON de imagens do GitHub"
+      );
+    }
+    
+    // Converte resposta para objeto
+    const imagensPadrao =
+      await res.json();
+    
+    // Salva no localStorage
+    localStorage.setItem(
+      "imagens",
+      JSON.stringify(imagensPadrao)
+    );
     
     return imagensPadrao;
+    
   } catch (err) {
+    
     console.error(err);
+    
     return {};
   }
 }
 
+// Busca imagens pelo NCE
 export async function pegarImagens(nce) {
-  let banco = JSON.parse(localStorage.getItem("imagens")) || {};
   
+  // Busca banco salvo
+  let banco =
+    JSON.parse(
+      localStorage.getItem("imagens")
+    ) || {};
+  
+  // Se não existir o NCE
   if (!banco[nce]) {
-    banco = await iniciarBancoImagens();
+    
+    // Atualiza banco
+    banco =
+      await iniciarBancoImagens();
   }
   
-  let imagens = banco[nce] || [];
+  // Busca imagens do produto
+  let imagens =
+    banco[nce] || [];
   
-  imagens = imagens.filter(img => img && img !== "null" && img.trim() !== "");
+  // Remove imagens inválidas
+  imagens = imagens.filter(
+    img =>
+    img &&
+    img !== "null" &&
+    img.trim() !== ""
+  );
   
+  // Se não tiver imagem
   if (!imagens.length) {
+    
     return [
       "https://raw.githubusercontent.com/ffsala2002-a11y/produtos-imagens/main/img-produtos/sem_img.png"
     ];
   }
   
+  // Limita até 4 imagens
   return imagens.slice(0, 4);
 }
