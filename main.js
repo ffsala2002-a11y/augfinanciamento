@@ -947,3 +947,6 @@ iniciarCompartilhar();
 iniciarFinanciamento();
 
 renderFinanciamento();
+
+
+localStorage.clear()
