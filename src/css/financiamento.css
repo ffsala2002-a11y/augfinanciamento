@@ -1,0 +1,475 @@
+/* aba financiamento */
+.rota {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+
+/* box financiamento */
+.box-financ {
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  top: 0;
+  overflow-y: auto;
+  padding: 16px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #FFFFFF;
+}
+
+
+/* card total */
+.financ-total-card {
+  background: #D20000;
+  border-radius: 18px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow:
+    0 4px 20px
+    rgba(0, 0, 0, 0.15);
+}
+
+
+/* label total */
+.financ-total-label {
+  font-size: 13px;
+  color:
+    rgba(255, 255, 255, 0.78);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+/* valor total */
+.financ-total-valor {
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+
+/* inputs */
+.financ-inputs {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap: 10px;
+}
+
+
+/* grupo input */
+.financ-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+/* label input */
+.financ-input-group label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+/* input */
+.financ-input-group input {
+  padding: 12px 14px;
+  background: #fff;
+  border:
+    1.5px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  outline: none;
+  transition: .2s;
+  width: 100%;
+}
+
+
+/* input focus */
+.financ-input-group input:focus {
+  border-color: #DD0000;
+  box-shadow:
+    0 0 0 4px
+    rgba(221, 0, 0, 0.08);
+}
+
+
+/* checkboxes */
+.financ-checks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* label checkbox */
+.financ-check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+}
+
+
+/* input checkbox */
+.financ-check-label
+input[type="checkbox"] {
+  display: none;
+}
+
+
+/* box checkbox */
+.financ-check-box {
+  width: 20px;
+  height: 20px;
+  border:
+    2px solid #D1D5DB;
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s;
+  flex-shrink: 0;
+}
+
+
+/* checkbox ativo */
+.financ-check-label
+input:checked
+~ .financ-check-box {
+  background: #DD0000;
+  border-color: #DD0000;
+}
+
+
+/* ícone checkbox */
+.financ-check-label
+input:checked
+~ .financ-check-box::after {
+  content: '✓';
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+
+/* header parcelas */
+.financ-parcelas-header {
+  background:
+    linear-gradient(
+      135deg,
+      #DD0000,
+      #B80000
+    );
+
+  border-radius: 14px;
+
+  padding: 14px 18px;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  color: #fff;
+
+  letter-spacing: .3px;
+  
+  text-align: center;
+
+  box-shadow:
+    0 4px 14px
+    rgba(221, 0, 0, 0.18);
+}
+
+
+/* lista parcelas */
+.financ-parcelas-lista {
+  width: 100%;
+  height: 50%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20rem;
+  left: 0;
+  z-index: 5;
+  background: #FFFFFF;
+  border-radius: 18px;
+  box-shadow:
+    0 4px 20px
+    rgba(0, 0, 0, 0.06);
+}
+
+
+/* item parcela */
+.financ-parcela-item {
+  padding: 16px;
+  border-bottom:
+    1px solid #F3F4F6;
+  cursor: pointer;
+  transition: .2s;
+}
+
+
+/* último item */
+.financ-parcela-item:last-child {
+  border-bottom: none;
+}
+
+
+/* hover item */
+.financ-parcela-item:hover {
+  background: #FAFAFA;
+}
+
+
+/* item ativo */
+.financ-parcela-item.ativo {
+  background: #FFF7F7;
+}
+
+
+/* linha parcela */
+.financ-parcela-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+/* círculo parcela */
+.financ-parcela-num {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      135deg,
+      #DD0000,
+      #B80000
+    );
+
+  color: #fff;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  box-shadow:
+    0 4px 12px
+    rgba(221, 0, 0, 0.25);
+}
+
+
+/* círculo sem juros */
+.financ-parcela-num.sem-juros {
+  background:
+    linear-gradient(
+      135deg,
+      #16A34A,
+      #15803D
+    );
+
+  box-shadow:
+    0 4px 12px
+    rgba(22, 163, 74, 0.25);
+}
+
+
+/* valores parcela */
+.financ-parcela-valores {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+/* valor parcela */
+.financ-parcela-valor {
+  font-size: 17px;
+  font-weight: 900;
+  color: #111827;
+  line-height: 1;
+}
+
+
+/* subtítulo parcela */
+.financ-parcela-sub {
+  font-size: 11px;
+  color: #9CA3AF;
+  font-weight: 600;
+}
+
+
+/* total parcela */
+.financ-parcela-total {
+  text-align: right;
+}
+
+
+/* valor total parcela */
+.financ-parcela-total-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111827;
+  display: block;
+}
+
+
+/* juros parcela */
+.financ-parcela-juros {
+  font-size: 11px;
+  color: #DC2626;
+  font-weight: 700;
+  display: block;
+  margin-top: 2px;
+}
+
+
+/* tag sem juros */
+.financ-parcela-juros.sem-juros-tag {
+  color: #16A34A;
+}
+
+
+/* detalhe parcela */
+.financ-parcela-detalhe {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+
+  transition:
+    max-height .3s ease,
+    opacity .2s ease,
+    margin-top .2s ease,
+    padding .2s ease;
+
+  margin-top: 0;
+  padding: 0 14px;
+}
+
+
+/* detalhe ativo */
+.financ-parcela-detalhe.ativo {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 14px;
+  padding: 14px;
+  background: #FFF5F5;
+  border:
+    1px solid #FEE2E2;
+  border-radius: 14px;
+}
+
+
+/* item detalhe */
+.financ-detalhe-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+
+  padding: 10px 0;
+
+  border-bottom:
+    1px solid #F3DADA;
+
+  font-size: 13px;
+  color: #374151;
+}
+
+
+/* último detalhe */
+.financ-detalhe-item:last-child {
+  border-bottom: none;
+}
+
+
+/* span detalhe */
+.financ-detalhe-item span {
+  color: #6B7280;
+  font-weight: 600;
+}
+
+
+/* strong detalhe */
+.financ-detalhe-item strong {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+
+/* total final */
+.financ-detalhe-item.total {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top:
+    2px dashed #FCA5A5;
+}
+
+
+/* span total */
+.financ-detalhe-item.total span {
+  color: #DD0000;
+  font-weight: 800;
+}
+
+
+/* strong total */
+.financ-detalhe-item.total strong {
+  color: #DD0000;
+  font-size: 16px;
+}
+
+
+/* vazio */
+.financ-empty {
+  text-align: center;
+  padding: 42px 20px;
+  color: #9CA3AF;
+}
+
+
+/* ícone vazio */
+.financ-empty-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+
+/* texto vazio */
+.financ-empty p {
+  font-size: 13px;
+  font-weight: 500;
+}
