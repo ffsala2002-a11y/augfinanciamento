@@ -2,161 +2,308 @@
 <html lang="pt-br">
 
 <head>
+    <!-- meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- css -->
     <link rel="stylesheet" href="./src/css/styles.css">
+    <link rel="stylesheet" href="./src/css/compartilhar.css">
+    <link rel="stylesheet" href="./src/css/financiamento.css">
+    
+    <!-- favicon -->
     <link rel="icon" href="./src/img/AUG.png" type="image/png">
+    
+    <!-- fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Changa+One:ital@0;1&display=swap" rel="stylesheet">
+    
     <title>AUG FINANCEIRA</title>
 </head>
 
 <body>
     
+    <!-- home -->
     <div id="home" class="rota active">
+        
+        <!-- topo -->
         <div class="topo">
+            
             <h1 class="titulo-aug">
                 AUG FINANCEIRA
             </h1>
             
-            
+            <!-- botão lateral -->
             <div class="btn-lateral">
+                
                 <button id="btn-lateral">
+                
                     <!--<img src="./src/img/upload.png" alt="Imagem logo arquivo">-->
+                    
                     <video src="./src/video/upload.mp4" muted autoplay loop></video>
+                    
                 </button>
+                
             </div>
+            
         </div>
         
-        
+        <!-- menu lateral -->
         <div class="menu-lateral">
+            
             <div class="upload">
+                
+                <!-- logo -->
                 <div class="tamb-title">
+                    
                     <div class="box-img">
+                        
                         <img src="./src/img/AUG-removebg-preview.png" alt="Imagem logo do app Aug Financeira">
-                        <span>Aug <span>Financeira</span></span>
+                        
+                        <span>
+                            Aug <span>Financeira</span>
+                        </span>
+                        
                     </div>
+                    
                 </div>
                 
+                <!-- card loja -->
                 <div class="card-loja">
+                    
                     <div class="box-sigla-loja">
+                        
                         <video src="./src/video/shop-store.mp4" muted loop autoplay></video>
+                        
                         <div class="sigla-info">
+                            
                             <span class="sigla-label">Loja</span>
+                            
                             <span id="nomeLoja"></span>
+                            
                         </div>
+                        
                     </div>
                     
-                    
+                    <!-- resumo -->
                     <div class="box-resumo-base">
+                        
                         <div class="content-resumo">
-                            <p><span id="totalProdutos">0</span><strong> Produtos disponíveis</strong></p>
-                            <p class="oculto"><span id="totalSaldo">0</span><strong></strong></p>
-                            <p class="garantia-saldo"><span id="totalGarantias">0</span><strong> Garantias disponíveis</strong></p>
+                            
+                            <p>
+                                <span id="totalProdutos">0</span>
+                                <strong> Produtos disponíveis</strong>
+                            </p>
+                            
+                            <p class="oculto">
+                                <span id="totalSaldo">0</span>
+                                <strong></strong>
+                            </p>
+                            
+                            <p class="garantia-saldo">
+                                <span id="totalGarantias">0</span>
+                                <strong> Garantias disponíveis</strong>
+                            </p>
+                            
                         </div>
-                    </div>
-                </div>
-                
-                <div class="box-importacao">
-                    <div class="box-title">
-                        <h2 class="title">Última Atualização:</h2>
-                    </div>
-                    <div class="content-resumo">
-                        <p> <span id="dataImportacao">Carregando...</span></p>
-                    </div>
-                </div>
-                
-                <div class="upload-txt">
-                    <div class="box-title">
-                        <video src="./src/video/pasta.mp4" muted autoplay loop></video>
-                        <!--<img src="./src/img/open-folder.png" alt="Imagem icone pasta">-->
-                        <h2 class="title">Importação Local</h2>
+                        
                     </div>
                     
+                </div>
+                
+                <!-- atualização -->
+                <div class="box-importacao">
+                    
+                    <div class="box-title">
+                        
+                        <h2 class="title">
+                            Última Atualização:
+                        </h2>
+                        
+                    </div>
+                    
+                    <div class="content-resumo">
+                        
+                        <p>
+                            <span id="dataImportacao">
+                                Carregando...
+                            </span>
+                        </p>
+                        
+                    </div>
+                    
+                </div>
+                
+                <!-- importação -->
+                <div class="upload-txt">
+                    
+                    <div class="box-title">
+                        
+                        <video src="./src/video/pasta.mp4" muted autoplay loop></video>
+                        
+                        <!--<img src="./src/img/open-folder.png" alt="Imagem icone pasta">-->
+                        
+                        <h2 class="title">
+                            Importação Local
+                        </h2>
+                        
+                    </div>
+                    
+                    <!-- inputs -->
                     <div class="box-import">
+                        
                         <div class="box-input1">
+                            
                             <img src="./src/img/import.png" alt="imagem logo arquivo">
+                            
                             <input type="file" id="fileProdutos" hidden>
-                            <label for="fileProdutos">Importar Produtos</label>
+                            
+                            <label for="fileProdutos">
+                                Importar Produtos
+                            </label>
+                            
                         </div>
                         
                         <div class="box-input2">
+                            
                             <img src="./src/img/warranty.png" alt="imagem logo garantia">
+                            
                             <input type="file" id="fileGarantias" hidden>
-                            <label for="fileGarantias">Importar Garantias</label>
+                            
+                            <label for="fileGarantias">
+                                Importar Garantias
+                            </label>
+                            
                         </div>
+                        
                     </div>
                     
+                    <!-- botões -->
                     <div class="box-salvar-limpar">
+                        
                         <div class="flex mt-10 buttons">
-                            <button id="btnSalvar">Salvar Base</button>
-                            <button class="secondary" id="btnLimparBase">Limpar Base</button>
+                            
+                            <button id="btnSalvar">
+                                Salvar Base
+                            </button>
+                            
+                            <button class="secondary" id="btnLimparBase">
+                                Limpar Base
+                            </button>
+                            
                         </div>
                         
                         <p id="msg" class="msg"></p>
                         
                     </div>
+                    
                 </div>
                 
-                <!--NOVO--->
+                <!-- modo -->
                 <div class="box-modo">
+                    
                     <div class="box-title">
+                        
                         <video src="./src/video/data-collection.mp4" muted autoplay loop></video>
-                        <h2 class="title">Fonte dos Dados</h2>
+                        
+                        <h2 class="title">
+                            Fonte dos Dados
+                        </h2>
+                        
                     </div>
+                    
                     <div class="content-modo">
+                        
                         <div class="toggle-modo">
-                            <button id="btnModoNuvem">☁️ Nuvem</button>
-                            <button id="btnModoLocal">💾 Local</button>
+                            
+                            <button id="btnModoNuvem">
+                                ☁️ Nuvem
+                            </button>
+                            
+                            <button id="btnModoLocal">
+                                💾 Local
+                            </button>
+                            
                         </div>
+                        
                     </div>
+                    
                 </div>
                 
-                
+                <!-- avatar -->
                 <div class="box-avatar">
+                    
                     <img src="./src/img/avatar.png" alt="icone avatar" />
-                    <button class="sair-conta" id="btnLogout">Sair da conta</button>
+                    
+                    <button class="sair-conta" id="btnLogout">
+                        Sair da conta
+                    </button>
+                    
                 </div>
                 
+                <!-- copyright -->
                 <div class="box-priv">
-                    <p class="priv">© 2026 DiegoDev — Todos os direitos reservados.</p>
+                    
+                    <p class="priv">
+                        © 2026 DiegoDev — Todos os direitos reservados.
+                    </p>
+                    
                 </div>
+                
             </div>
             
         </div>
         
-        
+        <!-- fundo -->
         <div class="fundo"></div>
         
-        
+        <!-- calculadora -->
         <div class="main-calculadora">
             
+            <!-- busca -->
             <div class="relative">
+                
                 <div class="box-input">
+                    
                     <img class="img-lupa" src="./src/img/seach.png" alt="Imagem logo pesquisa">
+                    
                     <input required class="campo-input" type="text" id="busca">
-                    <video id="btn-scan" class="btn-scan" src="./src/video/barcode.mp4" alt="video icone leitor de código de barras" muted loop autoplay></video>
-                    <label class="label-movie" for="busca">Buscar por NCE ou DESCRIÇÃO</label>
-                    <label id="deleteInput" class="delete-input"><img src="./src/img/close.png"></label>
+                    
+                    <!-- scanner botão -->
+                    <video id="btn-scan" class="btn-scan" src="./src/video/barcode.mp4" alt="video icone leitor de código de barras" muted loop autoplay>
+                    </video>
+                    
+                    <label class="label-movie" for="busca">
+                        Buscar por NCE ou DESCRIÇÃO
+                    </label>
+                    
+                    <label id="deleteInput" class="delete-input">
+                        <img src="./src/img/close.png">
+                    </label>
+                    
                 </div>
                 
-                
+                <!-- scanner -->
                 <div id="scannerOverlay" class="scanner-overlay">
-                    
-                    
                     
                     <div class="scanner-box">
                         
-                        
-                        
+                        <!-- scanner header -->
                         <div class="scanner-header">
                             
-                            <span class="titlle-scan">Leitor de código de barras</span>
+                            <span class="titlle-scan">
+                                Leitor de código de barras
+                            </span>
                             
-                            <button class="fechar-scan" id="fecharScanner">✕</button>
+                            <button class="fechar-scan" id="fecharScanner">
+                                ✕
+                            </button>
                             
                         </div>
                         
-                        
-                        
+                        <!-- scanner area -->
                         <div class="scanner-area">
                             
                             <div id="scanner-container"></div>
@@ -165,131 +312,205 @@
                             
                         </div>
                         
-                        
-                        
+                        <!-- scanner info -->
                         <div class="scanner-info">
                             
-                            <div class="box-item-scan">Itens adicionandos: <strong id="contadorLeitura">0</strong></div>
+                            <div class="box-item-scan">
+                                Itens adicionandos:
+                                <strong id="contadorLeitura">0</strong>
+                            </div>
                             
                             <div id="ultimoProduto" class="ultimo-produto"></div>
                             
                         </div>
                         
-                        
-                        
                     </div>
-                    
-                    
                     
                 </div>
                 
-                
-                
-                
+                <!-- sugestões -->
                 <div id="sugestoes" class="sugestoes">
+                    
                     <table>
+                        
                         <thead>
+                            
                             <tr>
+                                
                                 <th>IMG</th>
                                 <th>NCE</th>
                                 <th>Descrição</th>
                                 <th>Preço</th>
                                 <th>Saldo</th>
+                                
                             </tr>
+                            
                         </thead>
+                        
                         <tbody id="sugestoesBody"></tbody>
+                        
                     </table>
+                    
                 </div>
+                
             </div>
             
+            <!-- seta -->
             <div class="box-title">
+                
                 <!--<h2 class="title">Produtos Selecionados</h2>-->
+                
                 <img src="./src/img/down-arrow.png" alt="Imagem logo seta pra baixo">
+                
             </div>
             
+            <!-- lista -->
             <div class="box-list">
                 
                 <div id="lista"></div>
+                
             </div>
+            
         </div>
+        
     </div>
     
-    
-    
-    <div id="perfil" class="rota" data-rota="home">
+    <!-- financiamento -->
+    <div id="financ" class="rota">
+        
         <div class="box-financ">
-            <div class="topo-financ">
-                <div class="title-finance">
-                    <h1>Simulação Crediário</h1>
-                </div>
+            
+            <!-- total -->
+            <div class="financ-total-card">
+                
+                <span class="financ-total-label">
+                    Total/Avista
+                </span>
+                
+                <strong class="financ-total-valor" id="financTotalValor">
+                    R$ 0,00
+                </strong>
+                
             </div>
             
-            <div class="box-config">
-                <div class="taxa-financiamento">
-                    <div class="box">
-                        <label>Taxa (%) por parcela</label>
-                        <input type="number" id="taxa" value="9.9" step="0.01">
-                    </div>
+            <!-- inputs -->
+            <div class="financ-inputs">
+                
+                <div class="financ-input-group">
+                    
+                    <label for="entrada">
+                        Valor de Entrada
+                    </label>
+                    
+                    <input type="text" id="entrada" value="R$ 0,00" placeholder="R$ 0,00">
+                    
                 </div>
                 
-                
-                <div class="flex mt-10">
-                    <div class="box">
-                        <label>Parcelas</label>
-                        <select id="parcelas"></select>
-                    </div>
+                <div class="financ-input-group">
+                    
+                    <label for="taxa">
+                        Taxa de Juros (a.m.)
+                    </label>
+                    
+                    <input type="number" id="taxa" value="9.9" step="0.01" placeholder="0.00">
+                    
                 </div>
                 
-                
-                <div class="box-entrada">
-                    <div class="box">
-                        <label>Entrada</label>
-                        <input type="text" id="entrada" value="R$ 0,00">
-                    </div>
-                </div>
-                
-                
-                <div class="box-arrendondar">
-                    <div class="round-box">
-                        <input type="checkbox" id="arredondar">
-                        <label for="arredondar"><strong>Arredondar valor das parcelas</strong></label>
-                    </div>
-                </div>
-                
-                
-                <div class="flex mt-10">
-                    <div class="box-btns">
-                        <button id="btnCalcular">Calcular</button>
-                        <button class="secondary" id="btnLimparItens">Limpar Itens</button>
-                    </div>
-                </div>
-                
-                
-                <div id="resultado" class="result"></div>
             </div>
+            
+            <!-- checkboxes -->
+            <div class="financ-checks">
+                
+                <label class="financ-check-label">
+                
+                    <input type="checkbox" id="semJuros3x">
+                    
+                    <span class="financ-check-box"></span>
+                    
+                    <span>
+                        Até 3x sem juros
+                    </span>
+                    
+                </label>
+                
+                <label class="financ-check-label">
+                
+                    <input type="checkbox" id="parc18x">
+                    
+                    <span class="financ-check-box"></span>
+                    
+                    <span>
+                        Mostrar até 18x
+                    </span>
+                    
+                </label>
+                
+            </div>
+            
+            <!-- header -->
+            <div class="financ-parcelas-header">
+                
+                <span>
+                    Opções de Parcelamento
+                </span>
+                
+            </div>
+            
+            <!-- parcelas -->
+            <div class="financ-parcelas-lista" id="financParcelasList">
+                
+                <!-- JS renderiza aqui -->
+                
+            </div>
+            
+            <!-- compartilhar -->
+            <button id="btnCompartilharFinanc" class="btn-compartilhar-financ">
+            
+                <span>
+                    Compartilhar Simulação
+                </span>
+                
+            </button>
+            
         </div>
+        
     </div>
     
-    
-    <!-- Bottom toolbar -->
+    <!-- bottom bar -->
     <div class="bottom-bar">
+        
         <div class="box-btn">
+            
             <div class="btn active" onclick="mudarRota('home', this)">
+                
                 <img src="./src/img/box.png" alt="Imagem caixa de produto">
-                <span>Produtos</span>
+                
+                <span>
+                    Produtos
+                </span>
+                
             </div>
             
-            <div class="btn" onclick="mudarRota('perfil', this)">
+            <div class="btn" onclick="mudarRota('financ', this)">
+                
                 <img src="./src/img/accounts.png" alt="Imagem da calculadora">
-                <span>Financiamento</span>
+                
+                <span>
+                    Financiamento
+                </span>
+                
             </div>
+            
         </div>
+        
     </div>
     
-    
+    <!-- modal -->
     <div id="modalCarrossel">
         
-        <button id="fecharModal" class="btn-fechar"><img src="./src/img/close.png"></button>
+        <button id="fecharModal" class="btn-fechar">
+            <img src="./src/img/close.png">
+        </button>
         
         <div class="carrossel-container">
             <div id="carrosselTrack"></div>
@@ -299,74 +520,67 @@
         
     </div>
     
-    
-    
-    
-    <!--<div class="alerta-responsive">
-
-    <div class="content">
-
-      <h1>🚧 Aviso Importante! 🚧</h1>
-
-      <p>Nosso layout está atualmente 100% otimizado para celular 📲💙
-
-      A versão para 💻 PC ainda não está disponível no momento.</p> 
-
-      
-
-      <p>Estamos focando em entregar a melhor experiência possível no mobile — rápida, bonita e funcional! 🚀</p>
-
-    </div>
-
-    </div>-->
-    
+    <!-- spinner -->
     <div id="fundo-spiner" class="fundo-spiner">
-        <div class="card-spiner">
-            <!--<div id="load-spiner" class="load-spiner"></div>-->
-            <video id="video-load" class="video-load" src="./src/video/software-update.mp4"></video>
-            <p class="title-spiner">Carregando...</p>
+        
+        <div class="span-box">
+            
+            <span></span>
+            <span></span>
+            <span></span>
+            
         </div>
+        
+        <p id="textSpin" class="title-spiner"></p>
+        
     </div>
     
-    
-    
-    
+    <!-- popup -->
     <div id="popup" class="popup">
+        
         <div class="popup-box">
             
             <div class="popup-header">
+                
                 <h2>🚀 Novidades no site</h2>
+                
                 <span class="close">&times;</span>
+                
             </div>
             
-            <p>Estamos melhorando tudo pra você 📱✨</p>
-            
-            <div class="features">
-                <div>⚡ Mais velocidade</div>
-                <div>📱 Foco no mobile</div>
-                <div>🆕 Novas funções</div>
-            </div>
+            <p>
+                Estamos melhorando tudo pra você 📱✨
+            </p>
             
         </div>
+        
     </div>
     
-    <!-- TOAST -->
-    <div id="toast" class="toast">🎉 Atualizações aplicadas!</div>
+    <!-- toast -->
+    <!--<div id="toast" class="toast">
+        🎉 Atualizações aplicadas!
+    </div>-->
     
-    <!-- SOM -->
-    <audio id="som">
+    <!-- sons -->
+    <!--<audio id="som">
+    
         <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
-    </audio>
+        
+    </audio>-->
     
     <audio id="nuvemAtivo" src="./src/audio/nuvemAtivo.mp3"></audio>
+    
     <audio id="localAtivo" src="./src/audio/localAtivo.mp3"></audio>
     
-    
 </body>
-<!-- No HTML -->
+
+<!-- scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script type="module" src="./main.js"></script>
+
 <script src="./toolbar.js"></script>
+
 <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
 
 </html>
