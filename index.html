@@ -508,15 +508,29 @@
     <!-- modal -->
     <div id="modalCarrossel">
         
-        <button id="fecharModal" class="btn-fechar">
-            <img src="./src/img/close.png">
-        </button>
-        
-        <div class="carrossel-container">
-            <div id="carrosselTrack"></div>
+        <!-- TOPO -->
+        <div class="carrossel-topo">
+            <div class="carrossel-brand">AUG FINANCEIRA</div>
+            <div class="carrossel-produto-nome" id="carrosselNome"></div>
         </div>
         
-        <div id="indicadores"></div>
+        <!-- ÁREA DAS IMAGENS -->
+        <div class="carrossel-area">
+            <div class="carrossel-container">
+                <div id="carrosselTrack"></div>
+            </div>
+            <!-- CONTADOR -->
+            <div class="carrossel-contador" id="carrosselContador">1 / 1</div>
+            <!-- SETAS -->
+            <button class="carrossel-seta carrossel-seta-esq" id="setaEsq">‹</button>
+            <button class="carrossel-seta carrossel-seta-dir" id="setaDir">›</button>
+        </div>
+        
+        <!-- INDICADORES + FECHAR -->
+        <div class="carrossel-rodape">
+            <div id="indicadores" class="indicadores-galeria"></div>
+            <button id="fecharModal" class="carrossel-fechar">✕ Fechar</button>
+        </div>
         
     </div>
     
