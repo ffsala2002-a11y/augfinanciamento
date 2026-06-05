@@ -1567,68 +1567,159 @@ body {
   }
 }
 
+/* MODAL CARROSSEL */
 #modalCarrossel {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
-  justify-content: center;
-  align-items: center;
+  background: #0d0d0d;
+  z-index: 999;
   flex-direction: column;
-  z-index: 9999;
+}
+
+/* TOPO */
+.carrossel-topo {
+  background: #DD0000;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+.carrossel-brand {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #FFCD03, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.carrossel-produto-nome {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ÁREA */
+.carrossel-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 }
 
 .carrossel-container {
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  width: 90%;
-  max-width: 400px;
 }
 
 #carrosselTrack {
   display: flex;
+  height: 100%;
   transition: transform 0.3s ease;
+  will-change: transform;
+  align-items: center; 
 }
 
 .img-carrossel {
-  width: 100%;
-  border-radius: 20px;
-  object-fit: cover;
+  min-width: 100%;
+  max-height: 85%;  
+  object-fit: contain;
+  padding: 0 16px;    
+  border-radius: 30px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5); /* ← destaca a imagem */
 }
 
-/* Indicadores */
-#indicadores {
-  margin-top: 10px;
-  display: flex;
-  gap: 8px;
-}
-
-.indicador {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #777;
-  opacity: 0.5;
-}
-
-#fecharModal {
+/* CONTADOR */
+.carrossel-contador {
   position: absolute;
-  top: 1rem;
-  right: 2rem;
-  padding: 0.6rem 0.6rem;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+/* SETAS */
+.carrossel-seta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
   border: none;
-  border-radius: 10px;
-  color: #FFFFFF;
-  background: #FFBDBD;
+  color: #fff;
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+  z-index: 5;
+  line-height: 1;
 }
 
-#fecharModal img {
+.carrossel-seta:active { background: rgba(255,255,255,0.25); }
+.carrossel-seta-esq { left: 10px; }
+.carrossel-seta-dir { right: 10px; }
+
+/* RODAPÉ */
+.carrossel-rodape {
+  padding: 14px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  background: #0d0d0d;
+}
+
+.indicadores-galeria {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.indicadores-galeria .indicador {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all 0.2s;
+}
+
+.indicadores-galeria .indicador.ativo {
+  background: #DD0000;
   width: 20px;
+  border-radius: 4px;
 }
 
-.indicador.ativo {
-  background: #E90000;
-  opacity: 1;
+/* BOTÃO FECHAR */
+.carrossel-fechar {
+  padding: 10px 32px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+
+.carrossel-fechar:active { background: rgba(255,255,255,0.18); }
 
 
 
