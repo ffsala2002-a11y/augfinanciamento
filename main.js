@@ -488,33 +488,39 @@ function atualizarResumoBase() {
 // spinner / internet
 const fundoSpiner = document.getElementById("fundo-spiner");
 const textSpin = document.getElementById("textSpin");
+const videoSpin = document.querySelector(".video-spin");
 
 let timeId;
 
 function mostrarSpinner() {
   
   if (!fundoSpiner) return;
-  textSpin.textContent = "Sem conexão..."
   
-  fundoSpiner.classList.remove(
-    "active"
-  );
+  videoSpin.currentTime = 0;
+  videoSpin.play();
+  
+  textSpin.textContent = "Sem conexão...";
+  
+  fundoSpiner.classList.remove("active");
 }
 
 function esconderSpinner() {
   
   if (!fundoSpiner) return;
   
+  videoSpin.currentTime = 0;
+  videoSpin.play();
+  
+  textSpin.textContent = "";
+  
   clearTimeout(timeId);
-  textSpin.textContent = "Carregando..."
   
   timeId = setTimeout(() => {
     
-    fundoSpiner.classList.add(
-      "active"
-    );
+    fundoSpiner.classList.add("active");
+    videoSpin.pause();
     
-  }, 1500)
+  }, 2200)
 }
 
 
