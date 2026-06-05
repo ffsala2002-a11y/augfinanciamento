@@ -9,7 +9,7 @@
 
 :root {
   ---borraoFundo: blur(5px);
-  ---backgroundFundo: #BD0000;
+  ---backgroundFundo: #FFFFFF;
   ---backgroundCardSpiner: #F9FFF900;
   
   ---colorBorderSpiner: #A2A2A2;
@@ -2298,37 +2298,13 @@ body.dark {
   pointer-events: none;
 }
 
-.fundo-spiner .span-box {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.fundo-spiner .span-box span {
-  position: rela;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  animation: debonce 0.8s linear infinite;
-  background: #FFFFFF;
-}
-
-.fundo-spiner .span-box span:nth-child(2) {
-  animation-delay: 0.13s;
-}
-
-.fundo-spiner .span-box span:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
 .title-spiner {
-  color: var(---colorTitleSpiner);
   font-weight: bold;
+  color: #000000;
 }
 
-@keyframes debonce {
-  0%,100% {transform: translateY(0); opacity: 1;}
-  50% {transform: translateY(-6px) scale(1.2); opacity: 0.2;}
+.video-spin {
+  width: 300px;
 }
 
 .botao-load {
