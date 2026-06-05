@@ -381,254 +381,112 @@ export function render() {
 }
 
 // Evento global para abrir modal das imagens
-document.addEventListener(
-  'click',
-  async e => {
-    
-    // Verifica clique na imagem
-    if (
-      !e.target.classList.contains(
-        'img-produto'
-      )
-    ) return;
-    
-    // Pega NCE
-    const nce =
-      e.target.dataset.nce;
-    
-    // Busca imagens
-    const imagensOriginais =
-      await getImagem(nce);
-    
-    // Verifica se existem imagens
-    if (!imagensOriginais.length) return;
-    
-    // Elementos do modal
-    const modal =
-      document.getElementById(
-        'modalCarrossel'
-      );
-    
-    const track =
-      document.getElementById(
-        'carrosselTrack'
-      );
-    
-    const indicadoresBox =
-      document.getElementById(
-        'indicadores'
-      );
-    
-    // Segurança
-    if (!modal || !track || !indicadoresBox) return;
-    
-    // Limpa conteúdo antigo
-    track.innerHTML = '';
-    
-    indicadoresBox.innerHTML = '';
-    
-    // Array de imagens
-    let imagens = [...imagensOriginais];
-    
-    // Adiciona imagens extras para efeito infinito
-    if (imagensOriginais.length > 1) {
-      
-      imagens = [
-        imagensOriginais[
-          imagensOriginais.length - 1
-        ],
-        ...imagensOriginais,
-        imagensOriginais[0]
-      ];
-    }
-    
-    // Cria imagens do carrossel
-    imagens.forEach(src => {
-      
-      const img =
-        document.createElement('img');
-      
-      img.src = src;
-      
-      img.onerror = () => {
-        img.src = placeholder;
-      };
-      
-      img.classList.add(
-        'img-carrossel'
-      );
-      
-      track.appendChild(img);
-    });
-    
-    // Cria indicadores
-    imagensOriginais.forEach((_, i) => {
-      
-      const dot =
-        document.createElement('div');
-      
-      dot.classList.add('indicador');
-      
-      if (i === 0) {
-        dot.classList.add('ativo');
-      }
-      
-      indicadoresBox.appendChild(dot);
-    });
-    
-    // Índice inicial
-    let index =
-      imagensOriginais.length > 1 ?
-      1 :
-      0;
-    
-    // Controle touch
-    let startX = 0;
-    
-    // Atualiza indicador ativo
-    function atualizarIndicador() {
-      
-      const dots =
-        document.querySelectorAll(
-          '.indicador'
-        );
-      
-      dots.forEach(d =>
-        d.classList.remove('ativo')
-      );
-      
-      let realIndex;
-      
-      if (imagensOriginais.length === 1) {
-        
-        realIndex = 0;
-        
-      } else {
-        
-        realIndex = index - 1;
-        
-        if (index === 0) {
-          realIndex =
-            imagensOriginais.length - 1;
-        }
-        
-        if (
-          index ===
-          imagensOriginais.length + 1
-        ) {
-          realIndex = 0;
-        }
-      }
-      
-      dots[realIndex]
-        ?.classList.add('ativo');
-    }
-    
-    // Abre modal
-    modal.style.display = 'flex';
-    
-    // Remove transição temporariamente
-    track.style.transition = 'none';
-    
-    // Posiciona slide inicial
-    track.style.transform =
-      `translateX(-${index * 100}%)`;
-    
-    // Reativa animação
-    setTimeout(() => {
-      
-      track.style.transition =
-        'transform 0.3s ease';
-      
-    }, 50);
-    
-    atualizarIndicador();
-    
-    // Início do toque
-    track.ontouchstart = ev => {
-      
-      startX =
-        ev.touches[0].clientX;
-    };
-    
-    // Final do toque
-    track.ontouchend = ev => {
-      
-      const endX =
-        ev.changedTouches[0].clientX;
-      
-      const diff =
-        startX - endX;
-      
-      // Próxima imagem
-      if (diff > 50) index++;
-      
-      // Imagem anterior
-      if (diff < -50) index--;
-      
-      // Move carrossel
-      track.style.transform =
-        `translateX(-${index * 100}%)`;
-      
-      atualizarIndicador();
-      
-      // Loop infinito
-      if (imagensOriginais.length > 1) {
-        
-        setTimeout(() => {
-          
-          if (index === 0) {
-            index =
-              imagensOriginais.length;
-          }
-          
-          if (
-            index ===
-            imagensOriginais.length + 1
-          ) {
-            index = 1;
-          }
-          
-          track.style.transition =
-            'none';
-          
-          track.style.transform =
-            `translateX(-${index * 100}%)`;
-          
-          atualizarIndicador();
-          
-          setTimeout(() => {
-            
-            track.style.transition =
-              'transform 0.3s ease';
-            
-          }, 50);
-          
-        }, 300);
-      }
-    };
-  }
-);
+let carrosselIndex = 0;
+let carrosselImagens = [];
+let carrosselStartX = 0;
+let carrosselDragging = false;
 
-// Botão fechar modal
-const fecharModal =
-  document.getElementById('fecharModal');
+document.addEventListener('click', async e => {
+  if (!e.target.classList.contains('img-produto')) return;
 
-if (fecharModal) {
-  
-  fecharModal.onclick = () => {
-    
-    const modal =
-      document.getElementById(
-        'modalCarrossel'
-      );
-    
-    // Fecha modal
-    if (modal) {
-      modal.style.display = 'none';
-    }
+  const nce = e.target.dataset.nce;
+  const nome = e.target.closest('.item')?.querySelector('.descricao')?.textContent?.trim() || '';
+
+  const imgs = await getImagem(nce);
+  if (!imgs.length) return;
+
+  carrosselImagens = imgs.filter(s => s && s !== placeholder);
+  if (!carrosselImagens.length) return;
+
+  const modal       = document.getElementById('modalCarrossel');
+  const track       = document.getElementById('carrosselTrack');
+  const indicadores = document.getElementById('indicadores');
+  const contador    = document.getElementById('carrosselContador');
+  const nomeEl      = document.getElementById('carrosselNome');
+  const setaEsq     = document.getElementById('setaEsq');
+  const setaDir     = document.getElementById('setaDir');
+
+  if (!modal || !track) return;
+
+  // Preenche nome
+  if (nomeEl) nomeEl.textContent = nome;
+
+  // Monta slides
+  track.innerHTML = '';
+  carrosselImagens.forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.onerror = () => img.src = placeholder;
+    img.classList.add('img-carrossel');
+    track.appendChild(img);
+  });
+
+  // Monta dots
+  indicadores.innerHTML = '';
+  carrosselImagens.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'indicador' + (i === 0 ? ' ativo' : '');
+    indicadores.appendChild(dot);
+  });
+
+  // Esconde setas se só 1 imagem
+  if (setaEsq) setaEsq.style.display = carrosselImagens.length > 1 ? 'flex' : 'none';
+  if (setaDir) setaDir.style.display = carrosselImagens.length > 1 ? 'flex' : 'none';
+
+  carrosselIndex = 0;
+  atualizarCarrossel();
+
+  modal.style.display = 'flex';
+
+  // Setas
+  if (setaEsq) setaEsq.onclick = () => { carrosselIndex = (carrosselIndex - 1 + carrosselImagens.length) % carrosselImagens.length; atualizarCarrossel(); };
+  if (setaDir) setaDir.onclick = () => { carrosselIndex = (carrosselIndex + 1) % carrosselImagens.length; atualizarCarrossel(); };
+
+  // Swipe
+  track.ontouchstart = ev => {
+    carrosselStartX = ev.touches[0].clientX;
+    carrosselDragging = true;
   };
+
+  track.ontouchmove = ev => {
+    if (!carrosselDragging) return;
+    const dx = ev.touches[0].clientX - carrosselStartX;
+    const offset = carrosselIndex * 100 - (dx / track.parentElement.offsetWidth) * 100;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-${offset}%)`;
+  };
+
+  track.ontouchend = ev => {
+    if (!carrosselDragging) return;
+    carrosselDragging = false;
+    const diff = carrosselStartX - ev.changedTouches[0].clientX;
+    if (diff > 50 && carrosselIndex < carrosselImagens.length - 1) carrosselIndex++;
+    else if (diff < -50 && carrosselIndex > 0) carrosselIndex--;
+    atualizarCarrossel();
+  };
+});
+
+function atualizarCarrossel() {
+  const track     = document.getElementById('carrosselTrack');
+  const contador  = document.getElementById('carrosselContador');
+  const dots      = document.querySelectorAll('.indicadores-galeria .indicador');
+
+  if (track) {
+    track.style.transition = 'transform 0.3s ease';
+    track.style.transform  = `translateX(-${carrosselIndex * 100}%)`;
+  }
+
+  if (contador) contador.textContent = `${carrosselIndex + 1} / ${carrosselImagens.length}`;
+
+  dots.forEach((d, i) => d.classList.toggle('ativo', i === carrosselIndex));
 }
+
+// Fechar modal
+document.getElementById('fecharModal')?.addEventListener('click', () => {
+  const modal = document.getElementById('modalCarrossel');
+  if (modal) modal.style.display = 'none';
+  carrosselDragging = false;
+});
 
 // Quando carregar página
 document.addEventListener(
