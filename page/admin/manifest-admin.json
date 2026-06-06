@@ -1,0 +1,13 @@
+{
+  "name": "AUG Financeira Admin",
+  "short_name": "Admin",
+  "start_url": "./admin.html",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "../../src/img/AUG.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
