@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="./admin.css">
+  <link rel="manifest" href="../../manifest.json">
   <link rel="icon" href="../../src/img/AUG.png" type="image/png">
   <title>AUG — Admin</title>
 </head>
 
 <body>
-
+  
   <!-- ===================== LOGIN ===================== -->
   <div id="telaLoginAdmin">
     <div class="login-logo">AUG</div>
@@ -20,10 +21,10 @@
     <button id="btnLoginAdmin">Entrar</button>
     <p id="erroAdmin" class="erro"></p>
   </div>
-
+  
   <!-- ===================== PAINEL ===================== -->
   <div id="telaAdmin" style="display:none">
-
+    
     <!-- TOPO -->
     <div class="admin-topo">
       <div>
@@ -32,10 +33,10 @@
       </div>
       <button id="btnLogoutAdmin">🚪 Sair</button>
     </div>
-
+    
     <!-- CONTEÚDO -->
     <div class="main-content">
-
+      
       <!-- HOME -->
       <div id="painel-home" class="painel active">
         <div class="page-header">
@@ -44,7 +45,7 @@
         </div>
         <div id="listaLojas" class="lojas-grid"></div>
       </div>
-
+      
       <!-- CRIAR LOJA -->
       <div id="painel-criarLoja" class="painel">
         <div class="page-header">
@@ -61,7 +62,7 @@
           </div>
         </div>
       </div>
-
+      
       <!-- IMPORTAR BASE -->
       <div id="painel-importar" class="painel">
         <div class="page-header">
@@ -96,7 +97,7 @@
           <p id="statusImport" class="status-msg"></p>
         </div>
       </div>
-
+      
       <!-- APAGAR BANCO -->
       <div id="painel-apagarBanco" class="painel">
         <div class="page-header">
@@ -112,7 +113,7 @@
           </div>
         </div>
       </div>
-
+      
       <!-- APAGAR LOJA -->
       <div id="painel-apagarLoja" class="painel">
         <div class="page-header">
@@ -128,9 +129,9 @@
           </div>
         </div>
       </div>
-
+      
     </div>
-
+    
     <!-- BOTTOM BAR -->
     <div class="bottom-bar">
       <button class="bar-btn active" onclick="mostrarPainel('home', this)">
@@ -154,11 +155,11 @@
         <span class="bar-label">Loja</span>
       </button>
     </div>
-
+    
   </div>
-
+  
   <script type="module" src="../../src/js/admin.js"></script>
-
+  
   <script>
     function mostrarPainel(id, el) {
       document.querySelectorAll('.painel').forEach(p => p.classList.remove('active'));
@@ -167,7 +168,7 @@
       el.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
+    
     // Feedback visual nos uploads
     document.addEventListener('change', e => {
       if (e.target.type === 'file') {
@@ -184,6 +185,7 @@
       }
     });
   </script>
-
+  
 </body>
+
 </html>
