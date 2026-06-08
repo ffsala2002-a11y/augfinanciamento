@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="./admin.css">
-  <link rel="manifest" href="./manifest-admin.json">
-  <link rel="icon" href="../../src/img/aug-admin.png" type="image/png">
+  <link rel="manifest" href="../../manifest.json">
+  <link rel="icon" href="../../src/img/AUG.png" type="image/png">
   <title>AUG — Admin</title>
 </head>
 
 <body>
-  
+
   <!-- ===================== LOGIN ===================== -->
   <div id="telaLoginAdmin">
     <div class="login-logo">AUG</div>
@@ -21,10 +21,10 @@
     <button id="btnLoginAdmin">Entrar</button>
     <p id="erroAdmin" class="erro"></p>
   </div>
-  
+
   <!-- ===================== PAINEL ===================== -->
   <div id="telaAdmin" style="display:none">
-    
+
     <!-- TOPO -->
     <div class="admin-topo">
       <div>
@@ -33,10 +33,10 @@
       </div>
       <button id="btnLogoutAdmin">🚪 Sair</button>
     </div>
-    
+
     <!-- CONTEÚDO -->
     <div class="main-content">
-      
+
       <!-- HOME -->
       <div id="painel-home" class="painel active">
         <div class="page-header">
@@ -45,7 +45,7 @@
         </div>
         <div id="listaLojas" class="lojas-grid"></div>
       </div>
-      
+
       <!-- CRIAR LOJA -->
       <div id="painel-criarLoja" class="painel">
         <div class="page-header">
@@ -57,12 +57,33 @@
           <div class="field-group">
             <input type="text" id="nomeLoja" placeholder="Nome da loja">
             <input type="text" id="siglaLoja" placeholder="Sigla (ex: LJ01)">
+            <input type="text" id="senhaLoja" placeholder="Senha de acesso da loja">
             <button class="btn btn-gold" id="btnCriarLoja">✅ Criar Loja</button>
             <p id="statusCriarLoja" class="status-msg"></p>
           </div>
         </div>
       </div>
-      
+
+      <!-- GERENCIAR SENHA -->
+      <div id="painel-senha" class="painel">
+        <div class="page-header">
+          <h1>Gerenciar Senha</h1>
+          <p>Defina ou altere a senha de acesso de uma loja</p>
+        </div>
+        <div class="painel-card">
+          <h3>Selecionar loja</h3>
+          <div class="field-group">
+            <select id="selectLojaSenha"></select>
+            <div id="senhaAtualWrap" style="font-size:12px;color:#6b7280;padding:4px 2px;display:none">
+              Senha atual: <strong id="senhaAtualTexto" style="color:#f0f0f0"></strong>
+            </div>
+            <input type="text" id="novaSenha" placeholder="Nova senha">
+            <button class="btn btn-gold" id="btnSalvarSenha">🔑 Salvar Senha</button>
+            <p id="statusSenha" class="status-msg"></p>
+          </div>
+        </div>
+      </div>
+
       <!-- IMPORTAR BASE -->
       <div id="painel-importar" class="painel">
         <div class="page-header">
@@ -97,7 +118,7 @@
           <p id="statusImport" class="status-msg"></p>
         </div>
       </div>
-      
+
       <!-- APAGAR BANCO -->
       <div id="painel-apagarBanco" class="painel">
         <div class="page-header">
@@ -113,7 +134,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- APAGAR LOJA -->
       <div id="painel-apagarLoja" class="painel">
         <div class="page-header">
@@ -129,9 +150,9 @@
           </div>
         </div>
       </div>
-      
+
     </div>
-    
+
     <!-- BOTTOM BAR -->
     <div class="bottom-bar">
       <button class="bar-btn active" onclick="mostrarPainel('home', this)">
@@ -141,6 +162,10 @@
       <button class="bar-btn" onclick="mostrarPainel('criarLoja', this)">
         <span class="bar-icon">➕</span>
         <span class="bar-label">Criar</span>
+      </button>
+      <button class="bar-btn" onclick="mostrarPainel('senha', this)">
+        <span class="bar-icon">🔑</span>
+        <span class="bar-label">Senha</span>
       </button>
       <button class="bar-btn" onclick="mostrarPainel('importar', this)">
         <span class="bar-icon">⬆️</span>
@@ -155,11 +180,11 @@
         <span class="bar-label">Loja</span>
       </button>
     </div>
-    
+
   </div>
-  
+
   <script type="module" src="../../src/js/admin.js"></script>
-  
+
   <script>
     function mostrarPainel(id, el) {
       document.querySelectorAll('.painel').forEach(p => p.classList.remove('active'));
@@ -168,8 +193,7 @@
       el.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
-    // Feedback visual nos uploads
+
     document.addEventListener('change', e => {
       if (e.target.type === 'file') {
         const wrap = e.target.closest('.upload-item');
@@ -185,7 +209,6 @@
       }
     });
   </script>
-  
-</body>
 
-</html>
+</body>
+  </html>
