@@ -20,105 +20,79 @@ const vozErroLoja =
 // Controle do timeout
 let timeErroId;
 
+// Função de erro visual
+function mostrarErro(el, msg, audio) {
+  el.textContent = msg;
+  el.classList.add("active");
+  navigator.vibrate?.(80);
+  if (audio) {
+    audio.currentTime = 0;
+    audio.volume = 0.5;
+    audio.play();
+  }
+  clearTimeout(timeErroId);
+  timeErroId = setTimeout(() => {
+    el.classList.remove("active");
+  }, 1800);
+}
+
 // Evento do botão entrar
 document
   .getElementById('btnEntrar')
   .addEventListener('click', async () => {
-    
+
     // Pega valores dos inputs
     const nome =
       document.getElementById('nomeUsuario')
-      .value
-      .trim();
-    
+      .value.trim();
+
     const sigla =
       document.getElementById('siglaLoja')
-      .value
-      .trim()
-      .toUpperCase();
-    
+      .value.trim().toUpperCase();
+
+    const senha =
+      document.getElementById('senhaLogin')
+      .value.trim();
+
     // Verifica campos vazios
-    if (!nome || !sigla) {
-      
-      dadosErro.textContent =
-        'Preencha todos os campos';
-      
-      dadosErro.classList.add("active");
-      
-      // Vibração
-      navigator.vibrate(80);
-      
-      // Som erro campo
-      vozErroCampo.currentTime = 0;
-      vozErroSigla.volume = 0.5;
-      vozErroCampo.play();
-      
-      // Limpa timeout anterior
-      clearTimeout(timeErroId);
-      
-      // Remove erro depois
-      timeErroId = setTimeout(() => {
-        
-        dadosErro.classList.remove("active");
-        
-      }, 1200);
-      
+    if (!nome || !sigla || !senha) {
+      mostrarErro(
+        dadosErro,
+        'Preencha todos os campos',
+        vozErroCampo
+      );
       return;
     }
-    
+
     // Verifica tamanho da sigla
     if (sigla.length < 3) {
-      
-      erroSigla.textContent =
-        'A sigla deve ter exatamente 3 caracteres';
-      
-      erroSigla.classList.add("active");
-      
-      navigator.vibrate(80);
-      
-      // Som erro sigla
-      vozErroSigla.currentTime = 0;
-      vozErroSigla.volume = 0.5;
-      vozErroSigla.play();
-      
+      mostrarErro(
+        erroSigla,
+        'A sigla deve ter pelo menos 3 caracteres',
+        vozErroSigla
+      );
       return;
     }
-    
-    // Busca loja no Supabase
+
+    // Busca loja no Supabase verificando sigla + senha
     const { data, error } =
-    await supabase
-      .from('lojas')
-      .select('*')
-      .eq('sigla', sigla)
-      .single();
-    
-    // Loja não encontrada
+      await supabase
+        .from('lojas')
+        .select('*')
+        .eq('sigla', sigla)
+        .eq('senha', senha)
+        .single();
+
+    // Loja não encontrada ou senha errada
     if (error || !data) {
-      
-      dadosErro.textContent =
-        'Loja não encontrada. Contate o administrador';
-      
-      dadosErro.classList.add("active");
-      
-      navigator.vibrate(80);
-      
-      // Som erro loja
-      vozErroLoja.currentTime = 0;
-      vozErroLoja.volume = 0.5;
-      vozErroLoja.play();
-      
-      clearTimeout(timeErroId);
-      
-      // Remove mensagem depois
-      timeErroId = setTimeout(() => {
-        
-        dadosErro.classList.remove("active");
-        
-      }, 1200);
-      
+      mostrarErro(
+        dadosErro,
+        'Sigla ou senha incorretos',
+        vozErroLoja
+      );
       return;
     }
-    
+
     // Salva sessão local
     localStorage.setItem(
       'usuario',
@@ -128,7 +102,7 @@ document
         nomeLoja: data.nome
       })
     );
-    
+
     // Redireciona para o app
     window.location.href = '../../index.html';
   });
