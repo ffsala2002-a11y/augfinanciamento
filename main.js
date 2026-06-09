@@ -5,6 +5,7 @@ import { carregarBase, limparBase } from './src/js/base.js';
 import { adicionarCarrinho, limparCarrinho, carrinho } from './src/js/carrinho.js';
 import uploadLateral from './src/js/uploadLateral.js';
 import { lupaMovie } from './src/js/lupaMovie.js';
+import { iniciarCartao, renderCartao } from './src/js/cartao.js';
 //import { popupMobile } from './src/js/popup.js';
 import { getProdutos, getGarantias, getModo, setModo } from './src/js/modoBase.js';
 import { iniciarCompartilhar } from './src/js/compartilhar.js';
@@ -945,6 +946,8 @@ function pararScanner() {
 uploadLateral();
 
 lupaMovie();
+
+iniciarCartao();
 
 //popupMobile();
 
