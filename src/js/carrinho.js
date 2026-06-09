@@ -2,6 +2,7 @@
 import { fmt } from './util.js';
 import { pegarImagens } from './imagens.js';
 import { renderFinanciamento } from './financiamento.js';
+import { renderCartao } from './cartao.js';
 
 // Carrinho salvo no localStorage
 export let carrinho =
@@ -111,6 +112,15 @@ function renderSafe() {
     renderFinanciamento();
     
   }, 10);
+  
+  function renderSafe() {
+    clearTimeout(renderTimeout);
+    renderTimeout = setTimeout(() => {
+      render();
+      renderFinanciamento();
+      renderCartao(); // ← adicione
+    }, 10);
+  }
 }
 
 // Renderiza carrinho na tela
@@ -388,29 +398,29 @@ let carrosselDragging = false;
 
 document.addEventListener('click', async e => {
   if (!e.target.classList.contains('img-produto')) return;
-
+  
   const nce = e.target.dataset.nce;
   const nome = e.target.closest('.item')?.querySelector('.descricao')?.textContent?.trim() || '';
-
+  
   const imgs = await getImagem(nce);
   if (!imgs.length) return;
-
+  
   carrosselImagens = imgs.filter(s => s && s !== placeholder);
   if (!carrosselImagens.length) return;
-
-  const modal       = document.getElementById('modalCarrossel');
-  const track       = document.getElementById('carrosselTrack');
+  
+  const modal = document.getElementById('modalCarrossel');
+  const track = document.getElementById('carrosselTrack');
   const indicadores = document.getElementById('indicadores');
-  const contador    = document.getElementById('carrosselContador');
-  const nomeEl      = document.getElementById('carrosselNome');
-  const setaEsq     = document.getElementById('setaEsq');
-  const setaDir     = document.getElementById('setaDir');
-
+  const contador = document.getElementById('carrosselContador');
+  const nomeEl = document.getElementById('carrosselNome');
+  const setaEsq = document.getElementById('setaEsq');
+  const setaDir = document.getElementById('setaDir');
+  
   if (!modal || !track) return;
-
+  
   // Preenche nome
   if (nomeEl) nomeEl.textContent = nome;
-
+  
   // Monta slides
   track.innerHTML = '';
   carrosselImagens.forEach(src => {
@@ -420,7 +430,7 @@ document.addEventListener('click', async e => {
     img.classList.add('img-carrossel');
     track.appendChild(img);
   });
-
+  
   // Monta dots
   indicadores.innerHTML = '';
   carrosselImagens.forEach((_, i) => {
@@ -428,26 +438,28 @@ document.addEventListener('click', async e => {
     dot.className = 'indicador' + (i === 0 ? ' ativo' : '');
     indicadores.appendChild(dot);
   });
-
+  
   // Esconde setas se só 1 imagem
   if (setaEsq) setaEsq.style.display = carrosselImagens.length > 1 ? 'flex' : 'none';
   if (setaDir) setaDir.style.display = carrosselImagens.length > 1 ? 'flex' : 'none';
-
+  
   carrosselIndex = 0;
   atualizarCarrossel();
-
+  
   modal.style.display = 'flex';
-
+  
   // Setas
-  if (setaEsq) setaEsq.onclick = () => { carrosselIndex = (carrosselIndex - 1 + carrosselImagens.length) % carrosselImagens.length; atualizarCarrossel(); };
-  if (setaDir) setaDir.onclick = () => { carrosselIndex = (carrosselIndex + 1) % carrosselImagens.length; atualizarCarrossel(); };
-
+  if (setaEsq) setaEsq.onclick = () => { carrosselIndex = (carrosselIndex - 1 + carrosselImagens.length) % carrosselImagens.length;
+    atualizarCarrossel(); };
+  if (setaDir) setaDir.onclick = () => { carrosselIndex = (carrosselIndex + 1) % carrosselImagens.length;
+    atualizarCarrossel(); };
+  
   // Swipe
   track.ontouchstart = ev => {
     carrosselStartX = ev.touches[0].clientX;
     carrosselDragging = true;
   };
-
+  
   track.ontouchmove = ev => {
     if (!carrosselDragging) return;
     const dx = ev.touches[0].clientX - carrosselStartX;
@@ -455,7 +467,7 @@ document.addEventListener('click', async e => {
     track.style.transition = 'none';
     track.style.transform = `translateX(-${offset}%)`;
   };
-
+  
   track.ontouchend = ev => {
     if (!carrosselDragging) return;
     carrosselDragging = false;
@@ -467,17 +479,17 @@ document.addEventListener('click', async e => {
 });
 
 function atualizarCarrossel() {
-  const track     = document.getElementById('carrosselTrack');
-  const contador  = document.getElementById('carrosselContador');
-  const dots      = document.querySelectorAll('.indicadores-galeria .indicador');
-
+  const track = document.getElementById('carrosselTrack');
+  const contador = document.getElementById('carrosselContador');
+  const dots = document.querySelectorAll('.indicadores-galeria .indicador');
+  
   if (track) {
     track.style.transition = 'transform 0.3s ease';
-    track.style.transform  = `translateX(-${carrosselIndex * 100}%)`;
+    track.style.transform = `translateX(-${carrosselIndex * 100}%)`;
   }
-
+  
   if (contador) contador.textContent = `${carrosselIndex + 1} / ${carrosselImagens.length}`;
-
+  
   dots.forEach((d, i) => d.classList.toggle('ativo', i === carrosselIndex));
 }
 
