@@ -277,4 +277,4 @@ document.getElementById('btnImportar').addEventListener('click', async () => {
   if (errUpdate) console.error('Erro ao salvar data:', errUpdate.message);
 
   mostrarStatus('statusImport', `✅ ${produtos.length} produtos e ${garantias.length} garantias importados para ${sigla}!`, 'sucesso');
-});});
+});
