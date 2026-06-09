@@ -178,6 +178,8 @@ export function renderFinanciamento() {
     item.innerHTML = `
       <div class="financ-parcela-row">
 
+        <span class="text-info">Clique aqui pra mais detalhes</span>
+
         <div class="financ-parcela-num ${isSemJuros ? 'sem-juros' : ''}">
           ${n}x
         </div>
