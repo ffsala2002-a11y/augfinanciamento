@@ -5,7 +5,9 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
+.btn-abrir-cartao {
+  display: none;
+}
 
 :root {
   ---borraoFundo: blur(5px);
