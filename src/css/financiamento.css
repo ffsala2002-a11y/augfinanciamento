@@ -177,16 +177,15 @@ input:checked
 
 /* header parcelas */
 .financ-parcelas-header {
-  background:
-    linear-gradient(
-      135deg,
-      #DD0000,
-      #B80000
-    );
+  /*background: linear-gradient(135deg,#DD0000,#B80000);*/
+  
+  background: #FFFFFF;
 
   border-radius: 14px;
+  
+  border: solid 2px #DADADA73;
 
-  padding: 14px 18px;
+  padding: 14px 5px;
 
   font-size: 16px;
 
@@ -198,9 +197,14 @@ input:checked
   
   text-align: center;
 
-  box-shadow:
+  /*box-shadow:
     0 4px 14px
-    rgba(221, 0, 0, 0.18);
+    rgba(221, 0, 0, 0.18);*/
+}
+
+.financ-parcelas-header span {
+  display: flex;
+  justify-content: space-between;
 }
 
 

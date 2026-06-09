@@ -1,17 +1,13 @@
 /* botão compartilhar */
 .btn-compartilhar-financ {
-  width: 90%;
+  width: 120px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  z-index: 5;
-  top: 18.5rem;
-  left: 5%;
   /*transform: translateX(-70%);*/
-  padding: 0.2rem 0.5rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 7px;
   font-weight: bold;
   color: #FFFFFF;
   background: linear-gradient(135deg,
