@@ -1,0 +1,345 @@
+/* =====================================================
+   BOTÃO ABRIR CARTÃO
+   ===================================================== */
+.btn-abrir-cartao {
+  width: 40%;
+  height: 40px;
+  border: none;
+  border-radius: 7px;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  background: linear-gradient(135deg,#D39225 0%,#E3C200 100%);
+}
+
+.btn-abrir-cartao:active {
+  transform: scale(0.97);
+  background: #f5f5f5;
+}
+
+/* =====================================================
+   MODAL CARTÃO — ESTILO MENU LATERAL
+   ===================================================== */
+.modal-cartao {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(22, 22, 22, 0.7);
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease;
+}
+
+.modal-cartao.active {
+  display: flex;
+  animation: fadeInBgCartao 0.2s ease;
+}
+
+/* BOX — desliza da esquerda igual menu lateral */
+.cartao-box {
+  width: 88%;
+  max-width: 360px;
+  min-height: 70vh;
+  overflow: auto;
+  background: #F2F4F8;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transform: translateX(-110%);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: 40px;
+  animation:
+    slideUpp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.modal-cartao.active .cartao-box {
+  transform: translateX(0);
+}
+
+/* ALÇA */
+.cartao-handle {
+  width: 40px;
+  height: 4px;
+  background: #D1D5DB;
+  border-radius: 4px;
+  margin: 14px auto 0;
+  flex-shrink: 0;
+}
+
+/* ===== HEADER ===== */
+.cartao-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  flex-shrink: 0;
+}
+
+.cartao-header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cartao-icon {
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  background: #F3F4F6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cartao-titulo {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1A1A1A;
+  line-height: 1.2;
+}
+
+.cartao-sub {
+  font-size: 11px;
+  color: #9CA3AF;
+  font-weight: 400;
+}
+
+.cartao-fechar {
+  background: #F3F4F6;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  color: #6B7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.cartao-fechar:active { background: #E5E7EB; }
+
+/* ===== TOTAL ===== */
+.cartao-total-wrap {
+  background: #D20000;
+  margin: 12px;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.cartao-total-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.cartao-total-valor {
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.cartao-taxa-info {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cartao-taxa-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.cartao-taxa-badge.sem-juros {
+  background: rgba(215, 255, 235, 0.89);
+  color: #4caf7d;
+  border: 1px solid rgba(76,175,125,0.3);
+}
+
+.cartao-taxa-badge.com-juros {
+  background: rgba(50, 50, 50, 1);
+  color: #FFFFFF;
+  border: 1px solid rgba(221,0,0,0.25);
+}
+
+/* ===== HEADER PARCELAS ===== */
+.cartao-parcelas-header {
+  background: #DD0000;
+  margin: 0 12px;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+/* ===== LISTA PARCELAS ===== */
+.cartao-parcelas-lista {
+  margin: 0 12px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow-Y: scroll;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+/* ===== ITEM ===== */
+.cartao-parcela-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F3F4F6;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cartao-parcela-item:last-child { border-bottom: none; }
+.cartao-parcela-item:active { background: #F9FAFB; }
+
+.cartao-parcela-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Círculo Nx */
+.cartao-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+  color: #fff;
+}
+
+.cartao-num.sem-juros { background: #16A34A; }
+.cartao-num.com-juros { background: #DD0000; }
+
+.cartao-parcela-valores {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cartao-parcela-valor {
+  font-size: 16px;
+  font-weight: 800;
+  color: #111;
+}
+
+.cartao-parcela-sub {
+  font-size: 11px;
+  color: #9CA3AF;
+}
+
+.cartao-parcela-direita {
+  text-align: right;
+}
+
+.cartao-parcela-total {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  display: block;
+}
+
+.cartao-parcela-juros-tag {
+  font-size: 11px;
+  font-weight: 600;
+  display: block;
+}
+
+.cartao-parcela-juros-tag.sem { color: #16A34A; }
+.cartao-parcela-juros-tag.com { color: #DD0000; }
+
+/* ===== DETALHE EXPANDIDO ===== */
+.cartao-detalhe {
+  display: none;
+  margin-top: 10px;
+  background: #F9FAFB;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.8;
+  border: 1px solid #F3F4F6;
+}
+
+.cartao-detalhe.ativo { display: block; }
+.cartao-detalhe strong { color: #DD0000; }
+
+/* ===== EMPTY STATE ===== */
+.cartao-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #9CA3AF;
+}
+
+.cartao-empty-icon { font-size: 40px; margin-bottom: 10px; }
+.cartao-empty p { font-size: 13px; }
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeInBgCartao {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUpp {
+  
+  from {
+    transform:
+      translateX(100%);
+  }
+  
+  to {
+    transform:
+      translateX(0);
+  }
+}
+
+  @keyframes slideUpp {
+  
+  from {
+    transform:
+      translateX(100%);
+  }
+  
+  to {
+    transform:
+      translateX(0);
+  }
+}
