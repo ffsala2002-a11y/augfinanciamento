@@ -478,3 +478,13 @@ input:checked
   font-size: 13px;
   font-weight: 500;
 }
+
+.text-info {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.5;
+}
