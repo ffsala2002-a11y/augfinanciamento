@@ -1115,7 +1115,7 @@ body {
   width: 110%;
   margin: 0 auto;
   min-height: 500px;
-  max-height: 650px;
+  max-height: 500px;
   display: none;
   overflow-x: hidden;
   overflow-y: scroll;
