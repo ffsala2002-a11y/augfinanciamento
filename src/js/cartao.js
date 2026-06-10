@@ -14,6 +14,7 @@ export function iniciarCartao() {
   if (!document.getElementById('modalCartao')) {
     _criarModalNoDOM();
   }
+
   
   // Botão abrir
   document.addEventListener('click', e => {
