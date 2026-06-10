@@ -164,117 +164,123 @@ export function renderFinanciamento() {
       totalComJuros - financiado;
     
     // Cria item
-    const item =
-      document.createElement('div');
+    // Cria item
+    const item = document.createElement('div');
     
-    item.className =
-      'financ-parcela-item';
+    item.className = 'financ-parcela-item';
     
     // Verifica se está expandido
-    const isExpanded =
-      itemExpandido === n;
+    const isExpanded = itemExpandido === n;
     
     // HTML do item
     item.innerHTML = `
-      <div class="financ-parcela-row">
+  <div class="financ-parcela-row">
 
-        <span class="text-info">Clique aqui pra mais detalhes</span>
+    ${
+      !isExpanded
+        ? '<span class="text-info">Clique aqui pra mais detalhes</span>'
+        : ''
+    }
 
-        <div class="financ-parcela-num ${isSemJuros ? 'sem-juros' : ''}">
-          ${n}x
-        </div>
+    <div class="financ-parcela-num ${isSemJuros ? 'sem-juros' : ''}">
+      ${n}x
+    </div>
 
-        <div class="financ-parcela-valores">
+    <div class="financ-parcela-valores">
 
-          <span class="financ-parcela-valor">
-            ${fmt(valorParcela)}
-          </span>
+      <span class="financ-parcela-valor">
+        ${fmt(valorParcela)}
+      </span>
 
-          <span class="financ-parcela-sub">
-            ${n === 1
-              ? 'em até 1x'
-              : `em até ${n}x`
-            }
-          </span>
+      <span class="financ-parcela-sub">
+        ${n === 1
+          ? 'em até 1x'
+          : `em até ${n}x`
+        }
+      </span>
 
-        </div>
+    </div>
 
-        <div class="financ-parcela-total">
+    <div class="financ-parcela-total">
 
-          <span class="financ-parcela-total-val">
-            ${fmt(totalComJuros)}
-          </span>
+      <span class="financ-parcela-total-val">
+        ${fmt(totalComJuros)}
+      </span>
 
-          <span class="financ-parcela-juros ${isSemJuros ? 'sem-juros-tag' : ''}">
+      <span class="financ-parcela-juros ${isSemJuros ? 'sem-juros-tag' : ''}">
 
-            ${
-              isSemJuros
-                ? '✓ sem juros'
-                : juros > 0
-                  ? `+ juros ${fmt(juros)}`
-                  : 'sem juros'
-            }
+        ${
+          isSemJuros
+            ? '✓ sem juros'
+            : juros > 0
+              ? `+ juros ${fmt(juros)}`
+              : 'sem juros'
+        }
 
-          </span>
+      </span>
 
-        </div>
+    </div>
 
-      </div>
+  </div>
 
-      <div class="financ-parcela-detalhe ${isExpanded ? 'ativo' : ''}">
 
-        <div class="financ-detalhe-item">
-          <span>Valor avista</span>
-          <strong>${fmt(total)}</strong>
-        </div>
+  <div class="financ-parcela-detalhe ${isExpanded ? 'ativo' : ''}">
 
-        <div class="financ-detalhe-item">
-          <span>Entrada</span>
-          <strong>${fmt(entradaNum)}</strong>
-        </div>
+    <div class="financ-detalhe-item">
+      <span>Valor avista</span>
+      <strong>${fmt(total)}</strong>
+    </div>
 
-        <div class="financ-detalhe-item">
-          <span>Valor financiado</span>
-          <strong>${fmt(financiado)}</strong>
-        </div>
 
-        <div class="financ-detalhe-item">
-          <span>Parcelamento</span>
-          <strong>
-            ${n}x de ${fmt(valorParcela)}
-          </strong>
-        </div>
+    <div class="financ-detalhe-item">
+      <span>Entrada</span>
+      <strong>${fmt(entradaNum)}</strong>
+    </div>
 
-        <div class="financ-detalhe-item">
-          <span>Juros</span>
 
-          <strong>
-            ${
-              juros > 0
-                ? fmt(juros)
-                : 'Sem juros'
-            }
-          </strong>
-        </div>
+    <div class="financ-detalhe-item">
+      <span>Valor financiado</span>
+      <strong>${fmt(financiado)}</strong>
+    </div>
 
-        <div class="financ-detalhe-item total">
-          <span>Total a pagar</span>
-          <strong>${fmt(totalComJuros)}</strong>
-        </div>
 
-      </div>
-    `;
+    <div class="financ-detalhe-item">
+      <span>Parcelamento</span>
+      <strong>${n}x de ${fmt(valorParcela)}</strong>
+    </div>
+
+
+    <div class="financ-detalhe-item">
+      <span>Juros</span>
+      <strong>
+        ${
+          juros > 0
+            ? fmt(juros)
+            : 'Sem juros'
+        }
+      </strong>
+    </div>
+
+
+    <div class="financ-detalhe-item total">
+      <span>Total a pagar</span>
+      <strong>${fmt(totalComJuros)}</strong>
+    </div>
+
+  </div>
+`;
     
-    // Expande ou fecha detalhe
+    
+    // Clique abre/fecha
     item.addEventListener('click', () => {
       
       itemExpandido =
-        itemExpandido === n ?
-        -1 :
-        n;
+        itemExpandido === n ? -1 : n;
       
       renderFinanciamento();
+      
     });
+    
     
     lista.appendChild(item);
   }

@@ -14,7 +14,6 @@ export function iniciarCartao() {
   if (!document.getElementById('modalCartao')) {
     _criarModalNoDOM();
   }
-
   
   // Botão abrir
   document.addEventListener('click', e => {
@@ -193,8 +192,12 @@ export function renderCartao() {
     item.innerHTML = `
 
       <div class="cartao-parcela-row">
-
-       <span class="text-info">Clique aqui pra mais detalhes</span>
+      
+      ${
+      !expandido
+        ? '<span class="text-info">Clique aqui pra mais detalhes</span>'
+        : ''
+    }
 
 
         <div class="
