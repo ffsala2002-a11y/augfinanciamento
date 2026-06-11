@@ -5,12 +5,12 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "./src/img/AUG.png",
+      "src": "./src/img/copa.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "./src/img/AUG.png",
+      "src": "./src/img/copa.png",
       "sizes": "512x512",
       "type": "image/png"
     }
