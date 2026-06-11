@@ -24,7 +24,7 @@
 
 /* card total */
 .financ-total-card {
-  background: #D20000;
+  background: linear-gradient(135deg,#001A12,#003B1F,#D4AF37);
   border-radius: 18px;
   padding: 24px 20px;
   display: flex;
