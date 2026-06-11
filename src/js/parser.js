@@ -22,21 +22,16 @@ export function parseProdutos(txt) {
     try {
       
       // Extrai grupo
-      const grupo =
-        linha.substring(3, 5).trim() ||
-        grupoAtual;
+      const grupo = linha.substring(4, 5).trim() || grupoAtual;
       
       // Extrai NCE
-      const nce =
-        linha.substring(6, 12).trim();
+      const nce = linha.substring(6, 12).trim();
       
       // Extrai cor
-      const cor =
-        linha.substring(18, 38).trim();
+      const cor = linha.substring(18, 38).trim();
       
       // Extrai descrição
-      const descricaoBruta =
-        linha.substring(39, 90).trim();
+      const descricaoBruta = linha.substring(39).trim();
       
       // Extrai saldo e preço
       const valores =
@@ -140,21 +135,19 @@ function extrairValoresFinais(linha) {
 
 // Limpa descrição
 function limparDescricao(desc) {
-  
-  if (!desc) return "";
-  
-  return desc
-    
-    // Remove medidas
-    .replace(
-      /\d+(\,\d+)?\s?(L|ML|KG|GR|W|V)/gi,
-      ""
-    )
-    
-    // Remove espaços extras
-    .replace(/\s{2,}/g, " ")
-    
-    .trim();
+  if (!desc || typeof desc !== "string") return "";
+  try {
+    return desc
+      // Remove números e tudo que vem depois (saldo, cubagem, preço)
+      .replace(/\s{2,}\d+\.\d{2}.*$/, "")
+      // Remove medidas como 2000W, 2,2L, 220V etc
+      .replace(/\d+([.,]\d+)?\s?(L|ML|KG|GR|G|W|V)\b/gi, "")
+      // Remove espaços duplicados
+      .replace(/\s{2,}/g, " ")
+      .trim();
+  } catch {
+    return desc;
+  }
 }
 
 // Faz parse da base de garantias
