@@ -169,6 +169,8 @@ export function render() {
     div.innerHTML = `
       <div>
       
+      <img class="imgcopa" src="./src/img/tambcopa.png">
+      
       <div class="linha"></div>
         <div class="box-img-card">
 
