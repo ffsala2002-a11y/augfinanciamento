@@ -1365,7 +1365,7 @@ body {
 }
 
 .info-produto .NCE span {
-  color: #FF0000;
+  color: #00FFAB;
 }
 
 .info-produto .grupo {
@@ -1403,9 +1403,10 @@ body {
   top: 7rem;
   left: 6.7rem;
   width: 20%;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: bold;
   /*border: solid 1px;*/
-  color: #00A412;
+  color: #FFFE00;
 }
 
 .valor-total span {
