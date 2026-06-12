@@ -1,13 +1,18 @@
 {
-  "name": "AUG",
-  "short_name": "AUG",
-  "start_url": "./",
-  "display": "standalone",
-  "icons": [
-    {
-      "src": "./src/img/copa-v2.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+"name": "AUG",
+"short_name": "AUG",
+"start_url": "./",
+"display": "standalone",
+"icons": [
+{
+"src": "./src/img/copa.png",
+"sizes": "512x512",
+"type": "image/png"
+},
+{
+"src": "./src/img/copa.png",
+"sizes": "512x512",
+"type": "image/png"
 }
+]
+} 
