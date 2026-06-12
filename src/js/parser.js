@@ -22,7 +22,7 @@ export function parseProdutos(txt) {
     try {
       
       // Extrai grupo
-      const grupo = linha.substring(4, 5).trim() || grupoAtual;
+      const grupo = linha.substring(3, 5).trim() || grupoAtual
       
       // Extrai NCE
       const nce = linha.substring(6, 12).trim();
