@@ -912,6 +912,11 @@ body {
   background: #FFFFFF;
 }
 
+#btnModoLocal.desativado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 
 #btnModoNuvem.ativo {
   border-color: #2563EB;
