@@ -735,6 +735,11 @@ body {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
+#btnSalvar.desativado {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 #btnSalvar::before {
   content: "💾";
   display: flex;
@@ -766,6 +771,11 @@ body {
   color: #DC2626 !important;
   border-color: #FCA5A5 !important;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+#btnLimparBase.desativado {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 #btnLimparBase::before {
