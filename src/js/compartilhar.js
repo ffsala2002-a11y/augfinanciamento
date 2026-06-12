@@ -7,33 +7,58 @@ import { carrinho } from './carrinho.js';
 // Importa função que busca imagens dos produtos
 import { pegarImagens } from './imagens.js';
 
+// Importa cálculo das garantias
+import { calcularGarantiaTotal } from './garantias.js';
+
 // Importação da função alerta
 import mostrarAlerta from '../../main.js';
+
 
 // Imagem padrão caso o produto não tenha foto
 const placeholder =
   "https://raw.githubusercontent.com/ffsala2002-a11y/produtos-imagens/main/img-produtos/sem_img.png";
 
+
 // URL base do projeto
 const BASE_URL =
   "https://ffsala2002-a11y.github.io/augfinanciamentov4";
 
+
+// ================= TOTAL COM GARANTIA =================
+
+function pegarTotalFinanciamento() {
+  
+  const totalProdutos =
+    carrinho.reduce(
+      (acc, p) =>
+      acc + (p.preco * p.quantidade),
+      0
+    );
+  
+  
+  const totalGarantia =
+    calcularGarantiaTotal(carrinho) || 0;
+  
+  
+  return totalProdutos + totalGarantia;
+}
+
+
 // Inicializa modal de compartilhamento
 export function iniciarCompartilhar() {
   
-  // Evita criar modal duplicado
   if (
     document.getElementById('modalCompartilhar')
   ) return;
   
-  // Cria modal
+  
   const modal = document.createElement('div');
   
   modal.id = 'modalCompartilhar';
   
   modal.className = 'modal-compartilhar';
   
-  // HTML do modal
+  
   modal.innerHTML = `
     
     <div class="comp-box">
@@ -52,11 +77,12 @@ export function iniciarCompartilhar() {
         Compartilhar Produtos
       </p>
 
+
       <div
         id="compProdutosList"
         class="comp-produtos-list">
-
       </div>
+
 
       <div class="comp-opcao-section">
 
@@ -64,33 +90,23 @@ export function iniciarCompartilhar() {
           Incluir plano de pagamento?
         </p>
 
+
         <div class="comp-toggle-row">
 
           <button
             id="compSemPlano"
             class="comp-toggle ativo">
 
-            <span class="comp-toggle-icon">
-              📦
-            </span>
-
-            <span>
-              Só os produtos
-            </span>
+            📦 Só os produtos
 
           </button>
+
 
           <button
             id="compComPlano"
             class="comp-toggle">
 
-            <span class="comp-toggle-icon">
-              💳
-            </span>
-
-            <span>
-              Com plano
-            </span>
+            💳 Com plano
 
           </button>
 
@@ -98,14 +114,17 @@ export function iniciarCompartilhar() {
 
       </div>
 
+
       <div
         id="compPreviewPlano"
         class="comp-preview-plano"
         style="display:none">
 
+
         <div class="comp-plano-titulo">
           📋 Plano atual
         </div>
+
 
         <div
           id="compPlanoInfo"
@@ -113,7 +132,9 @@ export function iniciarCompartilhar() {
 
         </div>
 
+
       </div>
+
 
       <button
         id="btnEnviarWhats"
@@ -123,71 +144,92 @@ export function iniciarCompartilhar() {
 
       </button>
 
+
     </div>
   `;
   
-  // Adiciona modal no body
+  
   document.body.appendChild(modal);
   
-  // Estado do plano
+  
   let comPlano = false;
   
-  // Fecha modal no botão X
+  
   document
     .getElementById('fecharCompartilhar')
     .onclick = fecharModal;
   
-  // Fecha modal clicando fora
+  
+  
   modal.addEventListener('click', e => {
     
     if (e.target === modal) {
+      
       fecharModal();
+      
     }
+    
   });
   
   // Ativa modo sem plano
+  
   document
     .getElementById('compSemPlano')
     .onclick = () => {
       
       comPlano = false;
       
+      
       document
         .getElementById('compSemPlano')
         .classList.add('ativo');
+      
       
       document
         .getElementById('compComPlano')
         .classList.remove('ativo');
       
+      
       document
         .getElementById('compPreviewPlano')
         .style.display = 'none';
+      
     };
   
+  
+  
   // Ativa modo com plano
+  
   document
     .getElementById('compComPlano')
     .onclick = () => {
       
       comPlano = true;
       
+      
       document
         .getElementById('compComPlano')
         .classList.add('ativo');
+      
       
       document
         .getElementById('compSemPlano')
         .classList.remove('ativo');
       
+      
       document
         .getElementById('compPreviewPlano')
         .style.display = 'block';
       
+      
       atualizarPreviewPlano();
+      
     };
   
-  // Envia mensagem no WhatsApp
+  
+  
+  // WhatsApp
+  
   document
     .getElementById('btnEnviarWhats')
     .onclick = () => {
@@ -196,178 +238,200 @@ export function iniciarCompartilhar() {
         modal._imagensCache,
         comPlano
       );
+      
     };
   
-  // Função para fechar modal
+  
+  
   function fecharModal() {
     
     modal.classList.remove('active');
     
+    
     comPlano = false;
+    
     
     document
       .getElementById('compSemPlano')
       .classList.add('ativo');
     
+    
     document
       .getElementById('compComPlano')
       .classList.remove('ativo');
     
+    
     document
       .getElementById('compPreviewPlano')
       .style.display = 'none';
+    
   }
   
-  // Detecta clique no botão compartilhar
+  
+  
   document.addEventListener('click', e => {
     
     if (
-      e.target.closest(
-        '#btnCompartilharFinanc'
-      )
+      e.target.closest('#btnCompartilharFinanc')
     ) {
       
       abrirCompartilharGeral();
+      
     }
+    
   });
+  
 }
 
-/* Abrir modal de compartilhamento */
+
+
+// ================= MODAL =================
+
+
 async function abrirCompartilharGeral() {
   
-  // Verifica se há produtos
+  
   if (!carrinho.length) {
     
-    mostrarAlerta("Adicione produtos ao carrinho primeiro", "erro", 3000)
+    mostrarAlerta(
+      "Adicione produtos ao carrinho primeiro",
+      "erro",
+      3000
+    );
     
     return;
+    
   }
   
-  // Pega elementos do modal
+  
   const modal =
-    document.getElementById(
-      'modalCompartilhar'
-    );
+    document.getElementById('modalCompartilhar');
+  
   
   const lista =
-    document.getElementById(
-      'compProdutosList'
-    );
+    document.getElementById('compProdutosList');
   
-  // Mensagem de carregamento
-  lista.innerHTML = `
-    <p style="
-      font-size:12px;
-      color:#9CA3AF;
-      padding:8px 0">
-
-      Carregando imagens...
-
-    </p>
-  `;
   
-  // Exibe modal
+  
+  lista.innerHTML =
+    `
+<p>
+Carregando imagens...
+</p>
+`;
+  
+  
+  
   modal.classList.add('active');
   
-  // Cache de imagens
+  
+  
   const imagensCache = {};
   
-  // Busca imagens dos produtos
+  
+  
   await Promise.all(
     
     carrinho.map(async p => {
       
+      
       try {
+        
         
         const imgs =
           await pegarImagens(p.nce);
         
+        
         imagensCache[p.nce] =
-          imgs.length ?
-          imgs :
-          [placeholder];
+          imgs.length ? imgs : [placeholder];
+        
         
       } catch {
         
+        
         imagensCache[p.nce] = [placeholder];
+        
+        
       }
+      
+      
     })
+    
   );
   
-  // Salva cache dentro do modal
+  
+  
   modal._imagensCache =
     imagensCache;
   
-  // Renderiza produtos
+  
+  
   lista.innerHTML =
     carrinho.map(p => {
+      
       
       const imgs =
         imagensCache[p.nce] || [placeholder];
       
+      
       return `
-        <div class="comp-produto-item">
 
-          <img
-            src="${imgs[0]}"
-            onerror="this.src='${placeholder}'">
+<div class="comp-produto-item">
 
-          <div class="comp-produto-info">
 
-            <span class="comp-produto-desc">
-              ${p.descricao}
-            </span>
+<img src="${imgs[0]}"
+onerror="this.src='${placeholder}'">
 
-            <span class="comp-produto-preco">
 
-              ${(p.preco * p.quantidade)
-                .toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL'
-                })}
+<div>
 
-              × ${p.quantidade}
 
-            </span>
+${p.descricao}
 
-          </div>
 
-        </div>
-      `;
+<br>
+
+
+${(p.preco*p.quantidade)
+.toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+})}
+
+
+</div>
+
+
+</div>
+
+`;
       
     }).join('');
+  
 }
 
-/* Atualiza preview das parcelas */
+
+
+
+// ================= PREVIEW PARCELAS =================
+
+
 function atualizarPreviewPlano() {
   
-  const infoEl =
-    document.getElementById(
-      'compPlanoInfo'
-    );
   
-  // Verifica carrinho vazio
-  if (!carrinho.length) {
-    
-    infoEl.innerHTML = `
-      <p style="
-        color:#e05555;
-        font-size:12px;">
-
-        Nenhum produto no carrinho
-
-      </p>
-    `;
-    
-    return;
-  }
+  const infoEl =
+    document.getElementById('compPlanoInfo');
+  
+  
   
   try {
     
-    // Captura valores do simulador
+    
     const entrada =
       document.getElementById('entrada')
-      ?.value || 'R$ 0,00';
+      ?.value || 'R$0,00';
+    
+    
     
     const taxa =
       Number(
@@ -375,52 +439,60 @@ function atualizarPreviewPlano() {
         ?.value || 9.9
       );
     
+    
+    
     const semJuros =
       document.getElementById('semJuros3x')
       ?.checked || false;
+    
+    
     
     const parc18 =
       document.getElementById('parc18x')
       ?.checked || false;
     
-    // Converte entrada para número
+    
+    
     const entradaNum =
       Number(
         entrada.replace(/\D/g, '')
       ) / 100 || 0;
     
-    // Soma total do carrinho
-    const total =
-      carrinho.reduce(
-        (acc, p) =>
-        acc + (p.preco * p.quantidade),
-        0
-      );
     
-    // Valor financiado
+    
+    
+    // AQUI entra GE
+    
     const financiado =
       Math.max(
-        total - entradaNum,
+        pegarTotalFinanciamento() - entradaNum,
         0
       );
     
-    // Define máximo de parcelas
+    
+    
     const maxParcelas =
       parc18 ? 18 : 12;
     
+    
+    
     let html = '';
     
-    // Gera parcelas
-    for (let n = 1; n <= maxParcelas; n++) {
+    
+    
+    for (
+      let n = 1; n <= maxParcelas; n++
+    ) {
       
-      const isSemJuros =
+      
+      const sem =
         semJuros && n <= 3;
       
-      const taxaEfetiva =
-        isSemJuros ? 0 : taxa;
       
       const i =
-        taxaEfetiva / 100;
+        sem ? 0 : taxa / 100;
+      
+      
       
       const coef =
         i === 0 ?
@@ -432,210 +504,195 @@ function atualizarPreviewPlano() {
           Math.pow(1 + i, n) - 1
         );
       
-      const valorParcela =
+      
+      
+      const parcela =
         financiado * coef;
       
+      
+      
       html += `
-        <div class="plano-row">
 
-          <span>
-            ${n}x
-          </span>
+<div class="plano-row">
 
-          <strong>
-            ${valorParcela.toLocaleString(
-              'pt-BR',
-              {
-                style: 'currency',
-                currency: 'BRL'
-              }
-            )}
-          </strong>
+<span>
+${n}x
+</span>
 
-        </div>
-      `;
+
+<strong>
+
+${parcela.toLocaleString(
+'pt-BR',
+{
+style:'currency',
+currency:'BRL'
+}
+)}
+
+</strong>
+
+
+</div>
+
+`;
+      
     }
+    
+    
     
     infoEl.innerHTML = html;
     
+    
+    
   } catch {
     
-    infoEl.innerHTML = `
-      <p style="
-        color:#e05555;
-        font-size:12px;">
-
-        Configure o simulador primeiro
-
-      </p>
-    `;
+    
+    infoEl.innerHTML =
+      "Configure o simulador";
+    
   }
+  
+  
 }
 
-/* Envia mensagem no WhatsApp */
-function enviarWhatsApp(imagensCache,comPlano) {
+
+
+
+// ================= WHATSAPP =================
+
+
+function enviarWhatsApp(
+  imagensCache,
+  comPlano
+) {
   
-  // Texto inicial
+  
   let msg =
     `🛒 *Produtos selecionados*\n`;
   
-  msg +=
-    `━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
   
-  // Lista produtos
+  
   carrinho.forEach((p, i) => {
     
-    msg +=
-      `\n*${i + 1}. ${p.descricao}*\n`;
     
     msg +=
-      `P/AVISTA ${p.preco.toLocaleString(
+      `\n*${i+1}. ${p.descricao}*\n`;
+    
+    
+    msg +=
+      p.preco.toLocaleString(
         'pt-BR',
         {
           style: 'currency',
           currency: 'BRL'
         }
-      )}`;
-    
-    // Quantidade
-    if (p.quantidade > 1) {
-      
-      msg += ` × ${p.quantidade}`;
-    }
-    
-    msg += `\n`;
-    
-    // Imagens
-    const imgs =
-      (
-        imagensCache?.[p.nce] || []
-      ).filter(
-        u => u !== placeholder
       );
     
-    // Link galeria
-    if (imgs.length > 0) {
-      
-      const descEncoded =
-        encodeURIComponent(
-          p.descricao
-        );
-      
-      const galeriaUrl =
-        `${BASE_URL}/page/galeria/galeria.html?nce=${p.nce}&desc=${descEncoded}`;
-      
-      msg +=
-        `🖼️ Ver fotos: ${galeriaUrl}\n`;
-    }
+    
+    
   });
   
-  /* Plano de pagamento */
+  
+  
+  
+  
   if (comPlano) {
     
-    try {
+    
+    
+    const entrada =
+      document.getElementById('entrada')
+      ?.value || 'R$0,00';
+    
+    
+    
+    const entradaNum =
+      Number(
+        entrada.replace(/\D/g, '')
+      ) / 100 || 0;
+    
+    
+    
+    const financiado =
+      Math.max(
+        pegarTotalFinanciamento() - entradaNum,
+        0
+      );
+    
+    
+    
+    const taxa =
+      Number(
+        document.getElementById('taxa')
+        ?.value || 9.9
+      );
+    
+    
+    
+    const max =
+      document.getElementById('parc18x')
+      ?.checked ? 18 : 12;
+    
+    
+    
+    msg +=
+      `\n\n💳 *Plano de pagamento*\n`;
+    
+    
+    
+    for (
+      let n = 1; n <= max; n++
+    ) {
       
-      const entrada =
-        document.getElementById('entrada')
-        ?.value || 'R$ 0,00';
       
-      const taxa =
-        Number(
-          document.getElementById('taxa')
-          ?.value || 9.9
+      const i =
+        taxa / 100;
+      
+      
+      
+      const coef =
+        (
+          i * Math.pow(1 + i, n)
+        ) /
+        (
+          Math.pow(1 + i, n) - 1
         );
       
-      const semJuros =
-        document.getElementById('semJuros3x')
-        ?.checked || false;
       
-      const parc18 =
-        document.getElementById('parc18x')
-        ?.checked || false;
       
-      const entradaNum =
-        Number(
-          entrada.replace(/\D/g, '')
-        ) / 100 || 0;
+      const parcela =
+        financiado * coef;
       
-      const total =
-        carrinho.reduce(
-          (acc, p) =>
-          acc + (
-            p.preco * p.quantidade
-          ),
-          0
-        );
       
-      const financiado =
-        Math.max(
-          total - entradaNum,
-          0
-        );
-      
-      const maxParcelas =
-        parc18 ? 18 : 12;
       
       msg +=
-        `\n━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        `${n}x de ${
+parcela.toLocaleString(
+'pt-BR',
+{
+style:'currency',
+currency:'BRL'
+}
+)
+}\n`;
       
-      msg +=
-        `💳 *Plano de pagamento*\n\n`;
-      
-      // Gera parcelas
-      for (
-        let n = 1; n <= maxParcelas; n++
-      ) {
-        
-        const isSemJuros =
-          semJuros && n <= 3;
-        
-        const taxaEfetiva =
-          isSemJuros ?
-          0 :
-          taxa;
-        
-        const i =
-          taxaEfetiva / 100;
-        
-        const coef =
-          i === 0 ?
-          1 / n :
-          (
-            i * Math.pow(1 + i, n)
-          ) /
-          (
-            Math.pow(1 + i, n) - 1
-          );
-        
-        const valorParcela =
-          financiado * coef;
-        
-        msg +=
-          `${n}x de ${valorParcela.toLocaleString(
-            'pt-BR',
-            {
-              style: 'currency',
-              currency: 'BRL'
-            }
-          )}`;
-        
-        // Marca parcelas sem juros
-        if (isSemJuros) {
-          msg += ` ✅`;
-        }
-        
-        msg += `\n`;
-      }
-      
-    } catch {}
+    }
+    
+    
   }
   
-  // Rodapé
-  msg += `\n_AUG Financeira_ ✨`;
   
-  // Abre WhatsApp
+  
+  msg +=
+    `\n_AUG Financeira_ ✨`;
+  
+  
+  
   window.open(
     `https://wa.me/?text=${encodeURIComponent(msg)}`,
     '_blank'
   );
+  
+  
 }
