@@ -900,6 +900,10 @@ body {
   color: #374151;
 }
 
+#btnModoNuvem.desativado {
+  pointer-events: none;
+  opacity: 0.5;
+}
 
 #btnModoLocal {
   border-color: #2563EB;
