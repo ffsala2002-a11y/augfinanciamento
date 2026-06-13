@@ -562,137 +562,60 @@ currency:'BRL'
 // ================= WHATSAPP =================
 
 
-function enviarWhatsApp(
-  imagensCache,
-  comPlano
-) {
-  
-  
-  let msg =
-    `🛒 *Produtos selecionados*\n`;
-  
-  
-  
+function enviarWhatsApp(imagensCache, comPlano) {
+
+  const garantias = JSON.parse(localStorage.getItem('garantias') || '[]');
+
+  let msg = `🛒 *Produtos selecionados*\n`;
+
   carrinho.forEach((p, i) => {
-    
-    
-    msg +=
-      `\n*${i+1}. ${p.descricao}*\n`;
-    
-    
-    msg +=
-      p.preco.toLocaleString(
-        'pt-BR',
-        {
-          style: 'currency',
-          currency: 'BRL'
-        }
-      );
-    
-    
-    
-  });
-  
-  
-  
-  
-  
-  if (comPlano) {
-    
-    
-    
-    const entrada =
-      document.getElementById('entrada')
-      ?.value || 'R$0,00';
-    
-    
-    
-    const entradaNum =
-      Number(
-        entrada.replace(/\D/g, '')
-      ) / 100 || 0;
-    
-    
-    
-    const financiado =
-      Math.max(
-        pegarTotalFinanciamento() - entradaNum,
-        0
-      );
-    
-    
-    
-    const taxa =
-      Number(
-        document.getElementById('taxa')
-        ?.value || 9.9
-      );
-    
-    
-    
-    const max =
-      document.getElementById('parc18x')
-      ?.checked ? 18 : 12;
-    
-    
-    
-    msg +=
-      `\n\n💳 *Plano de pagamento*\n`;
-    
-    
-    
-    for (
-      let n = 1; n <= max; n++
-    ) {
-      
-      
-      const i =
-        taxa / 100;
-      
-      
-      
-      const coef =
-        (
-          i * Math.pow(1 + i, n)
-        ) /
-        (
-          Math.pow(1 + i, n) - 1
-        );
-      
-      
-      
-      const parcela =
-        financiado * coef;
-      
-      
-      
-      msg +=
-        `${n}x de ${
-parcela.toLocaleString(
-'pt-BR',
-{
-style:'currency',
-currency:'BRL'
-}
-)
-}\n`;
-      
+
+    msg += `\n*${i + 1}. ${p.descricao}*\n`;
+    msg += p.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (p.quantidade > 1) msg += ` × ${p.quantidade}`;
+    msg += `\n`;
+
+    // ← Garantia selecionada
+    if (p.garantia === 1 || p.garantia === 2) {
+      const g = garantias.find(k => k.nce === p.nce);
+      if (g) {
+        const valorG = p.garantia === 1
+          ? (g.g1 || 0) * p.quantidade
+          : (g.g2 || 0) * p.quantidade;
+        msg += `🛡️ GE ${p.garantia}: ${valorG.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`;
+      }
     }
-    
-    
+
+    // ← Link da galeria
+    const imgs = (imagensCache?.[p.nce] || []).filter(u => u !== placeholder);
+    if (imgs.length > 0) {
+      const descEncoded = encodeURIComponent(p.descricao);
+      const galeriaUrl = `${BASE_URL}/page/galeria/galeria.html?nce=${p.nce}&desc=${descEncoded}`;
+      msg += `🖼️ Ver fotos: ${galeriaUrl}\n`;
+    }
+
+  });
+
+  if (comPlano) {
+    const entrada    = document.getElementById('entrada')?.value || 'R$0,00';
+    const entradaNum = Number(entrada.replace(/\D/g, '')) / 100 || 0;
+    const financiado = Math.max(pegarTotalFinanciamento() - entradaNum, 0);
+    const taxa       = Number(document.getElementById('taxa')?.value || 9.9);
+    const max        = document.getElementById('parc18x')?.checked ? 18 : 12;
+    const semJuros   = document.getElementById('semJuros3x')?.checked || false;
+
+    msg += `\n💳 *Plano de pagamento*\n`;
+
+    for (let n = 1; n <= max; n++) {
+      const sem  = semJuros && n <= 3;
+      const i    = sem ? 0 : taxa / 100;
+      const coef = i === 0 ? 1 / n : (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+      const parcela = financiado * coef;
+      msg += `${n}x de ${parcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}${sem ? ' (sem juros)' : ''}\n`;
+    }
   }
-  
-  
-  
-  msg +=
-    `\n_AUG Financeira_ ✨`;
-  
-  
-  
-  window.open(
-    `https://wa.me/?text=${encodeURIComponent(msg)}`,
-    '_blank'
-  );
-  
-  
+
+  msg += `\n_AUG Financeira_ ✨`;
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 }
