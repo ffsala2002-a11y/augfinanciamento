@@ -136,15 +136,20 @@ function extrairValoresFinais(linha) {
 // Limpa descrição
 function limparDescricao(desc) {
   if (!desc || typeof desc !== "string") return "";
+  
   try {
-    return desc
-      // Remove números e tudo que vem depois (saldo, cubagem, preço)
-      .replace(/\s{2,}\d+\.\d{2}.*$/, "")
-      // Remove medidas como 2000W, 2,2L, 220V etc
-      .replace(/\d+([.,]\d+)?\s?(L|ML|KG|GR|G|W|V)\b/gi, "")
-      // Remove espaços duplicados
-      .replace(/\s{2,}/g, " ")
-      .trim();
+    // Divide em tokens e para no primeiro número isolado (saldo/preço)
+    const tokens = desc.trim().split(/\s+/);
+    const resultado = [];
+    
+    for (const token of tokens) {
+      // Para quando encontra token numérico puro como 3.00, 0.00301, 199.00
+      if (/^\d+\.\d+$/.test(token)) break;
+      resultado.push(token);
+    }
+    
+    return resultado.join(' ').trim();
+    
   } catch {
     return desc;
   }
