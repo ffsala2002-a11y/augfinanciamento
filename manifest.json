@@ -5,12 +5,12 @@
 "display": "standalone",
 "icons": [
 {
-"src": "./src/img/copa26-v3.png",
+"src": "./src/img/copa26-v1.png",
 "sizes": "512x512",
 "type": "image/png"
 },
 {
-"src": "./src/img/copa26-v3.png",
+"src": "./src/img/copa26-v1.png",
 "sizes": "512x512",
 "type": "image/png"
 }
