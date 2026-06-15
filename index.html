@@ -587,6 +587,12 @@
     <audio id="nuvemAtivo" src="./src/audio/nuvemAtivo.mp3"></audio>
     
     <audio id="localAtivo" src="./src/audio/localAtivo.mp3"></audio>
+
+    <script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
+    </script>
     
 </body>
 
